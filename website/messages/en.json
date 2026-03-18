@@ -1,8 +1,8 @@
 {
   "nav": {
-    "overview": "Overview",
+    "overview": "Home",
     "selfHosted": "Self-Hosted",
-    "cloud": "Cloud",
+    "cloud": "Cloud Roadmap",
     "security": "Security",
     "contact": "Contact",
     "github": "GitHub"
@@ -25,9 +25,9 @@
     "brandTagline": "Japan-first AI Agent",
     "cloudPlanned": "Official cloud roadmap",
     "openSource": "Open Source",
-    "footerNote": "Prototype website in a local worktree. Product claims are limited to currently demonstrated capabilities."
+    "footerNote": "This public demo only describes capabilities already shown in the prototype. Planned items remain marked as roadmap."
   },
   "section": {
-    "launch": "Launch"
+    "launch": "Next Step"
   }
 }

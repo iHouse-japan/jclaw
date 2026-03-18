@@ -7,7 +7,7 @@ export async function SiteFooter() {
   return (
     <footer className="site-footer">
       <div className="site-footer__inner">
-        <div>
+        <div className="site-footer__brand">
           <p className="eyebrow">JClaw</p>
           <h2>Japan-first AI Agent</h2>
           <p>{t('common.footerNote')}</p>

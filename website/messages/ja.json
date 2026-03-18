@@ -1,10 +1,10 @@
 {
   "nav": {
-    "overview": "Overview",
-    "selfHosted": "Self-Hosted",
-    "cloud": "Cloud",
-    "security": "Security",
-    "contact": "Contact",
+    "overview": "ホーム",
+    "selfHosted": "セルフホスト",
+    "cloud": "クラウド計画",
+    "security": "安全性",
+    "contact": "相談",
     "github": "GitHub"
   },
   "language": {
@@ -23,9 +23,9 @@
   },
   "common": {
     "brandTagline": "Japan-first AI Agent",
-    "cloudPlanned": "Official cloud roadmap",
-    "openSource": "Open Source",
-    "footerNote": "Prototype website in local worktree. Product claims are limited to currently demonstrated capabilities."
+    "cloudPlanned": "公式クラウド計画",
+    "openSource": "公開版",
+    "footerNote": "現在の公開デモで確認できる提供範囲のみを記載し、未提供機能は roadmap として扱います。"
   },
   "section": {
     "launch": "相談導線"

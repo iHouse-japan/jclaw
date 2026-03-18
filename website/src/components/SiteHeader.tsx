@@ -17,11 +17,11 @@ export async function SiteHeader() {
         </Link>
 
         <nav className="main-nav" aria-label="Primary">
-          <Link href="/">{t('nav.overview')}</Link>
-          <Link href="/self-hosted">{t('nav.selfHosted')}</Link>
-          <Link href="/cloud">{t('nav.cloud')}</Link>
-          <Link href="/security">{t('nav.security')}</Link>
-          <Link href="/contact">{t('nav.contact')}</Link>
+          <Link className="main-nav__link" href="/">{t('nav.overview')}</Link>
+          <Link className="main-nav__link" href="/self-hosted">{t('nav.selfHosted')}</Link>
+          <Link className="main-nav__link" href="/cloud">{t('nav.cloud')}</Link>
+          <Link className="main-nav__link" href="/security">{t('nav.security')}</Link>
+          <Link className="main-nav__link" href="/contact">{t('nav.contact')}</Link>
           <a
             className="main-nav__github"
             href="https://github.com/iHouse-japan/jclaw"
