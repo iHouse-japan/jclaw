@@ -3,3 +3,4 @@ out/
 node_modules/
 .artifacts/
 output/
+test-results/

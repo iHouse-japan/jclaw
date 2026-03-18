@@ -1,0 +1,42 @@
+name: Website Navigation Smoke
+
+on:
+  pull_request:
+    paths:
+      - 'website/**'
+      - '.github/workflows/website-navigation-smoke.yml'
+  workflow_dispatch:
+
+jobs:
+  website-navigation-smoke:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: website
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: website/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run header navigation smoke
+        run: npm run test:e2e:header
+
+      - name: Upload Playwright HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: website-navigation-smoke-report
+          path: website/.artifacts/playwright-report
+          if-no-files-found: ignore
