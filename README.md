@@ -1,7 +1,7 @@
 # JClaw
 
 <p align="center">
-  <img src="logo.svg" alt="JClaw Logo" width="400"/>
+  <img src="logo.png" alt="JClaw Logo" width="400"/>
 </p>
 
 > **Japan's first LINE-native AI Agent, powered by local LLM**
