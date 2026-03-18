@@ -1,0 +1,33 @@
+{
+  "nav": {
+    "overview": "Overview",
+    "selfHosted": "Self-Hosted",
+    "cloud": "Cloud",
+    "security": "Security",
+    "contact": "Contact",
+    "github": "GitHub"
+  },
+  "language": {
+    "label": "Language",
+    "ja": "JP",
+    "en": "EN",
+    "zh-cn": "简中"
+  },
+  "cta": {
+    "requestDemo": "申请演示",
+    "viewOss": "查看 OSS",
+    "contactTeam": "联系团队",
+    "joinWaitlist": "加入候补名单",
+    "reviewSecurity": "查看安全说明",
+    "seeDeployment": "查看部署方式"
+  },
+  "common": {
+    "brandTagline": "Japan-first AI Agent",
+    "cloudPlanned": "Official cloud roadmap",
+    "openSource": "Open Source",
+    "footerNote": "当前为本地 worktree 中的官网原型。页面中的产品表述仅限于目前已展示的能力。"
+  },
+  "section": {
+    "launch": "咨询入口"
+  }
+}
