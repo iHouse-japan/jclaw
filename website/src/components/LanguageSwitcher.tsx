@@ -1,6 +1,6 @@
 'use client';
 
-import {useLocale} from 'next-intl';
+import {useLocale, useTranslations} from 'next-intl';
 import NextLink from 'next/link';
 import {usePathname} from 'next/navigation';
 import {routing, type AppLocale} from '@/i18n/routing';
@@ -25,12 +25,20 @@ function buildLocalePath(targetLocale: AppLocale, pathname: string) {
   return basePath === '/' ? `/${targetLocale}` : `/${targetLocale}${basePath}`;
 }
 
-export function LanguageSwitcher() {
+type LanguageSwitcherProps = {
+  className?: string;
+};
+
+export function LanguageSwitcher({className}: LanguageSwitcherProps = {}) {
   const locale = useLocale() as AppLocale;
   const pathname = usePathname();
+  const t = useTranslations();
 
   return (
-    <div className="language-switcher" aria-label="Language switcher">
+    <div
+      className={className ? `language-switcher ${className}` : 'language-switcher'}
+      aria-label={t('language.label')}
+    >
       {routing.locales.map((nextLocale) => {
         const href = buildLocalePath(nextLocale, pathname);
 

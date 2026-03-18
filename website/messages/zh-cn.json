@@ -5,10 +5,12 @@
     "cloud": "云路线图",
     "security": "安全说明",
     "contact": "咨询",
-    "github": "GitHub"
+    "github": "GitHub",
+    "menuOpen": "打开菜单",
+    "menuClose": "关闭菜单"
   },
   "language": {
-    "label": "Language",
+    "label": "语言切换",
     "ja": "JP",
     "en": "EN",
     "zh-cn": "简中"
@@ -25,7 +27,7 @@
     "brandTagline": "Japan-first AI Agent",
     "cloudPlanned": "官方云路线图",
     "openSource": "开源版",
-    "footerNote": "当前公开 demo 仅描述原型中已展示的能力，规划中的内容继续按 roadmap 标注。"
+    "footerNote": "当前公开 demo 仅描述原型中已展示的能力，规划中的内容继续按路线图标注。"
   },
   "section": {
     "launch": "咨询入口"

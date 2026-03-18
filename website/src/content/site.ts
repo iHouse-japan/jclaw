@@ -125,7 +125,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
         whyJapan: 'なぜ日本市場か',
         whyJapanTitle: '日本市場を前提にした理由',
         routes: '導入ルート',
-        routesTitle: 'Self-Hosted と Official Cloud を役割で分けて示す',
+        routesTitle: 'Self-Hosted と公式クラウド計画を役割で分けて示す',
         productOverview: 'プロダクト概観',
         productOverviewTitle: '運用者が理解しやすいプロダクト構造を見せる',
         useCases: '利用シーン',
@@ -137,31 +137,31 @@ const siteContent: Record<AppLocale, SiteContent> = {
         eyebrow: 'LINE-native AI for Japan',
         title: 'LINE 起点で導入できる、日本市場向け AI Agent。',
         intro:
-          'JClaw は Self-Hosted と将来の公式 Cloud を見据えながら、日本企業の運用条件に合わせて設計する Japan-first AI Agent です。',
+          'JClaw は Self-Hosted と将来の公式クラウド計画を見据えながら、日本企業の運用条件に合わせて設計する Japan-first AI Agent です。',
         note:
-          '派手な約束ではなく、導入判断に必要な情報を先に見せることを優先します。データ処理、Human Review、責任分界、日本語支援を公式サイト上で明示します。',
+          '派手な約束ではなく、導入判断に必要な情報を先に見せることを優先します。データ処理、人的確認、責任分界、日本語支援を公式サイト上で明示します。',
         roadmapNote:
-          'JClaw Cloud は official roadmap として案内中です。現時点で試せる route は Self-Hosted を前提にします。',
+          'JClaw Cloud は公式クラウド計画として案内中です。現時点で試せる導入ルートは Self-Hosted を前提にします。',
         points: [
           '日本語 UX と日本企業の導入文脈を優先',
           'LINE を主要導線に据えた運用設計',
-          'Self-Hosted から始めて Cloud roadmap へ接続できる'
+          'Self-Hosted から始めてクラウド計画へ接続できる'
         ],
         proofBadges: [
           'Self-Hosted 提供中',
-          'Cloud は roadmap 表示のみ',
-          'Human Review を前提化',
+          'Cloud は計画表示のみ',
+          '人的確認を前提化',
           '日本市場向けサポート設計'
         ],
         preview: {
           eyebrow: '運用イメージ',
           title: '問い合わせ受付からレビュー判断までを、一つの運用画面で見せる。',
           body:
-            '静的 mock で product story を見せ、現時点で重要なのは管理感・説明責任・日本語運用の見通しであることを伝える。',
+            '静的なプレビューで製品像を見せつつ、現時点で重要なのは管理感・説明責任・日本語運用の見通しであることを伝える。',
           metrics: [
             {label: '入口', value: 'LINE-native'},
             {label: '現在ルート', value: 'Self-Hosted'},
-            {label: 'Cloud', value: 'Roadmap'}
+            {label: 'Cloud', value: '計画中'}
           ],
           workflowLabel: '運用フロー',
           workflowSteps: [
@@ -172,8 +172,8 @@ const siteContent: Record<AppLocale, SiteContent> = {
           ],
           statusLabel: '現在の前提',
           statusItems: [
-            {name: 'Data Handling', state: '明示'},
-            {name: 'Human Review', state: '必須'},
+            {name: 'データ処理', state: '明示'},
+            {name: '人的確認', state: '必須'},
             {name: 'Cloud', state: '計画中'}
           ],
           signalCards: [
@@ -199,23 +199,23 @@ const siteContent: Record<AppLocale, SiteContent> = {
         '日本企業では、AI の便利さだけでなく、データの扱い、誤情報への備え、責任分界、稟議で説明できるかまで同時に見られます。',
       trustStrip: [
         {
-          title: 'Data Handling',
+          title: 'データ処理',
           body: '入力データの送信先、管理主体、学習利用の扱いを曖昧にしない。'
         },
         {
-          title: 'Human Review',
+          title: '人的確認',
           body: 'AI 出力をそのまま使わず、人が確認できる運用前提を置く。'
         },
         {
-          title: 'Responsibility Boundary',
+          title: '責任分界',
           body: 'Self-Hosted と Cloud で誰が何を担うかを先に分けて示す。'
         },
         {
-          title: 'Japanese Support',
+          title: '日本語支援',
           body: '日本語で相談・導入説明・運用支援を受けられる前提を作る。'
         },
         {
-          title: 'Procurement Readiness',
+          title: '稟議準備',
           body: '安全説明、プライバシー方針、導入形態を稟議前に確認しやすくする。'
         }
       ],
@@ -302,7 +302,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
         title: 'JClaw Self-Hosted | 日本企業向け自己ホスト AI Agent',
         description: 'JClaw Self-Hosted は LINE とローカル LLM を組み合わせ、自社環境で運用できる公開版です。'
       },
-      eyebrow: 'Self-Hosted',
+      eyebrow: 'セルフホスト',
       title: '自社環境で始める、Japan-first AI Agent。',
       intro:
         'JClaw Self-Hosted は、現在もっとも現実的に試せる導入形態です。PoC、閉域環境、社内検証に向けて、運用の主導権を自社に残せます。',
@@ -353,7 +353,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
         title: 'JClaw Cloud | 公式托管 AI Agent roadmap',
         description: 'JClaw Cloud は、ログ、権限、運用監視、日本語サポートをまとめる予定の公式托管版 roadmap です。'
       },
-      eyebrow: 'Official cloud roadmap',
+      eyebrow: '公式クラウド計画',
       title: '日本向けに運用しやすい、公式托管版を構想する。',
       intro:
         'JClaw Cloud は、運用の手離れを良くしながら、日本企業が必要とする説明責任と管理性を両立させるための将来像です。',
@@ -377,7 +377,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
           ]
         },
         {
-          title: 'planned capabilities',
+          title: '計画中の提供範囲',
           bullets: [
             '組織・権限・利用状況の管理',
             '会話ログや運用イベントの可視化',
@@ -388,7 +388,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
           title: '今は約束しないこと',
           bullets: [
             'SLA、監査認証、法務条項など未確定事項は記載しない',
-            '未実装の機能を marketing copy で誇張しない',
+            '未実装の機能を販促文で誇張しない',
             'Self-Hosted と Cloud の責任範囲を混ぜて説明しない'
           ]
         }
@@ -401,9 +401,9 @@ const siteContent: Record<AppLocale, SiteContent> = {
     security: {
       seo: {
         title: 'JClaw Security | データ・責任・透明性の考え方',
-        description: 'JClaw の安全性ページ。データ処理、Human Review、責任分界、日本語サポート、稟議準備の考え方を整理しています。'
+        description: 'JClaw の安全性ページ。データ処理、人的確認、責任分界、日本語支援、稟議準備の考え方を整理しています。'
       },
-      eyebrow: 'Security & Trust',
+      eyebrow: '信頼と安全性',
       title: '安全性は、説明できることから始まる。',
       intro:
         '日本の導入現場では、AI の精度だけでなく、データの扱い、誤情報の前提、責任分界、説明責任が同時に問われます。JClaw はそこを公式サイト上で先に示します。',
@@ -412,23 +412,23 @@ const siteContent: Record<AppLocale, SiteContent> = {
           title: '重要視する5つの軸',
           cards: [
             {
-              title: 'Data Handling',
+              title: 'データ処理',
               body: 'どこにデータが送られるか、誰が管理するか、学習利用の扱いはどうかを曖昧にしない。'
             },
             {
-              title: 'Human Review',
+              title: '人的確認',
               body: 'AI 出力の誤情報リスクを前提にし、人が確認・修正できる運用設計を置く。'
             },
             {
-              title: 'Responsibility Boundary',
+              title: '責任分界',
               body: 'Self-Hosted と Cloud で責任の所在が変わることを、提案段階から明確に説明する。'
             },
             {
-              title: 'Japanese Support',
+              title: '日本語支援',
               body: '導入説明、相談、問い合わせ導線を日本語で整え、現場が理解しやすい状態をつくる。'
             },
             {
-              title: 'Procurement Readiness',
+              title: '稟議準備',
               body: '稟議や調達で必要になる情報を早く揃え、検討が止まる原因を減らす。'
             }
           ]
@@ -449,10 +449,10 @@ const siteContent: Record<AppLocale, SiteContent> = {
     },
     contact: {
       seo: {
-        title: 'JClaw Contact | デモ相談と初期導入の相談',
-        description: 'JClaw のデモ相談ページ。Self-Hosted 検討、Cloud roadmap 相談、導入シーンの整理を受け付けます。'
+        title: 'JClaw | デモ相談と初期導入の相談',
+        description: 'JClaw のデモ相談ページ。Self-Hosted 検討、クラウド計画の相談、導入シーンの整理を受け付けます。'
       },
-      eyebrow: 'Contact',
+      eyebrow: '相談',
       title: 'まずは、どの導入形態が合うかを整理する。',
       intro:
         '初期段階では、価格表よりも前に「どのデータを扱うか」「誰が運用するか」「自己ホストか托管か」を整理する方が価値があります。',
@@ -486,7 +486,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
       ],
       cta: {
         title: 'デモ相談は日本語で進める。',
-        body: '現時点ではメールベースの軽い相談導線に留め、フォーム backend は current runtime に混ぜない。'
+        body: '現時点ではメールベースの軽い相談導線に留め、フォーム用の処理系は現在の実行基盤に混ぜない。'
       }
     }
   },
@@ -879,7 +879,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
         whyJapan: '为什么先做日本市场',
         whyJapanTitle: '为什么产品要先从日本市场出发',
         routes: '部署路线',
-        routesTitle: '把 Self-Hosted 与 Official Cloud 分成两条职责清楚的路线',
+        routesTitle: '把 Self-Hosted 与官方云路线图分成两条职责清楚的路线',
         productOverview: '产品概览',
         productOverviewTitle: '像真正的产品官网一样解释运营结构',
         useCases: '使用场景',
@@ -891,31 +891,31 @@ const siteContent: Record<AppLocale, SiteContent> = {
         eyebrow: 'LINE-native AI for Japan',
         title: '适合日本团队落地运营的 Japan-first AI Agent。',
         intro:
-          'JClaw 以 LINE 为入口，把 Self-Hosted 控制权与未来官方 Cloud 路线放进同一套产品叙事，服务日本团队的真实导入场景。',
+          'JClaw 以 LINE 为入口，把 Self-Hosted 控制权与未来官方云路线图放进同一套产品叙事，服务日本团队的真实导入场景。',
         note:
           '这一版首页不再只讲概念，而是先把数据处理、人工复核、责任边界和日本语支持这些真正影响导入的点放到第一屏。',
         roadmapNote:
-          'JClaw Cloud 当前只按 official roadmap 展示。眼下可以实际试跑的路线，仍然是 JClaw Self-Hosted。',
+          'JClaw Cloud 当前只按官方路线图展示。眼下可以实际试跑的路线，仍然是 JClaw Self-Hosted。',
         points: [
           '优先围绕日本团队的工作流程与沟通习惯设计',
           '把 LINE 作为主要的业务入口',
-          '先给出可落地的 Self-Hosted 路线，再连接到 Cloud roadmap'
+          '先给出可落地的 Self-Hosted 路线，再连接到云路线图'
         ],
         proofBadges: [
           'Self-hosted 可试用',
-          'Cloud 仅作 roadmap',
+          'Cloud 仅作路线图展示',
           '人工复核可见',
           '日本市场优先'
         ],
         preview: {
-          eyebrow: 'Operational preview',
+          eyebrow: '运营预览',
           title: '把运营者真正关心的流程和边界，直接放进产品预览里。',
           body:
-            '这里用静态 mock 展示产品感，重点不是假装功能已经上线，而是把入口、审核、控制权和 roadmap 边界讲清楚。',
+            '这里用静态预览展示产品感，重点不是假装功能已经上线，而是把入口、审核、控制权和路线图边界讲清楚。',
           metrics: [
             {label: '入口', value: 'LINE-native'},
             {label: '当前路线', value: 'Self-Hosted'},
-            {label: '后续方向', value: 'Cloud roadmap'}
+            {label: '后续方向', value: '云路线图'}
           ],
           workflowLabel: '运营流程',
           workflowSteps: [
@@ -926,8 +926,8 @@ const siteContent: Record<AppLocale, SiteContent> = {
           ],
           statusLabel: '当前姿态',
           statusItems: [
-            {name: 'Data Handling', state: '明确'},
-            {name: 'Human Review', state: '必须'},
+            {name: '数据处理', state: '明确'},
+            {name: '人工复核', state: '必须'},
             {name: 'Cloud', state: '规划中'}
           ],
           signalCards: [
@@ -953,23 +953,23 @@ const siteContent: Record<AppLocale, SiteContent> = {
         '日本企业在导入 AI 时，通常会同时追问数据处理、输出风险、责任归属和采购可解释性。首页应该先回答这些问题。',
       trustStrip: [
         {
-          title: 'Data Handling',
+          title: '数据处理',
           body: '明确输入数据会去哪里、由谁管理，以及是否涉及训练使用。'
         },
         {
-          title: 'Human Review',
+          title: '人工复核',
           body: '默认 AI 输出可能出错，把人工确认设计进流程本身。'
         },
         {
-          title: 'Responsibility Boundary',
+          title: '责任边界',
           body: '把 Self-Hosted 与 Cloud 的责任边界从一开始就分清。'
         },
         {
-          title: 'Japanese Support',
+          title: '日语支持',
           body: '让咨询、导入说明和支持路径都能以日语自然进行。'
         },
         {
-          title: 'Procurement Readiness',
+          title: '采购准备度',
           body: '让安全说明、隐私方针和部署形态更容易进入内部评审。'
         }
       ],
@@ -990,7 +990,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
         }
       ],
       routesIntro:
-        '官网应该把“现在能怎么开始”和“未来会往哪里走”拆开表达，而不是把公开版和托管路线混成一句 marketing copy。',
+        '官网应该把“现在能怎么开始”和“未来会往哪里走”拆开表达，而不是把公开版和托管路线混成一句营销口号。',
       routes: {
         selfHosted: {
           title: 'JClaw Self-Hosted',
@@ -1056,7 +1056,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
         title: 'JClaw Self-Hosted | 面向日本团队的自部署路线',
         description: 'JClaw Self-Hosted 让团队在自己的环境中，把 LINE 工作流与本地 LLM 连接起来。'
       },
-      eyebrow: 'Self-Hosted',
+      eyebrow: '私有部署',
       title: '先把控制权掌握在自己手里的现实路线。',
       intro:
         'JClaw Self-Hosted 是当前最适合先落地的方式。它让团队可以在自有环境中完成试点、验证和早期运营，而不必先依赖托管服务。',
@@ -1107,7 +1107,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
         title: 'JClaw Cloud | 官方云托管路线 roadmap',
         description: 'JClaw Cloud 是计划中的官方托管路线，目标是集中日志、权限、运营可视化和日语支持。'
       },
-      eyebrow: 'Official cloud roadmap',
+      eyebrow: '官方云路线图',
       title: '面向日本运营现实而设计的官方托管路线。',
       intro:
         'JClaw Cloud 是未来面向不希望自行承担全部运维成本的团队所设计的官方托管方案，同时保留对信任和责任边界的清晰说明。',
@@ -1131,7 +1131,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
           ]
         },
         {
-          title: 'planned capabilities',
+          title: '计划中的提供范围',
           bullets: [
             '组织与权限管理',
             '会话与运营事件的可视化',
@@ -1155,9 +1155,9 @@ const siteContent: Record<AppLocale, SiteContent> = {
     security: {
       seo: {
         title: 'JClaw Security | 数据处理、人工审核与责任边界',
-        description: '查看 JClaw 对数据处理、Human Review、责任边界、日语支持和采购准备度的思路。'
+        description: '查看 JClaw 对数据处理、人工复核、责任边界、日语支持和采购准备度的思路。'
       },
-      eyebrow: 'Security & Trust',
+      eyebrow: '信任与安全',
       title: '安全，首先要能说清楚。',
       intro:
         '对日本团队来说，评估 AI 不只是看模型能力，还要看数据如何处理、错误输出如何应对、责任谁来承担，以及是否能顺利通过内部评审。',
@@ -1166,23 +1166,23 @@ const siteContent: Record<AppLocale, SiteContent> = {
           title: '五个关键支柱',
           cards: [
             {
-              title: 'Data Handling',
+              title: '数据处理',
               body: '明确数据会去哪里、由谁管理，以及是否涉及训练使用。'
             },
             {
-              title: 'Human Review',
+              title: '人工复核',
               body: '把模型错误视为正常可能性，并在流程中保留人工判断和修正的位置。'
             },
             {
-              title: 'Responsibility Boundary',
+              title: '责任边界',
               body: '清楚说明 Self-Hosted 和托管模式下责任归属的不同。'
             },
             {
-              title: 'Japanese Support',
+              title: '日语支持',
               body: '让现场运营者和审批者都能用日语理解导入与支持方式。'
             },
             {
-              title: 'Procurement Readiness',
+              title: '采购准备度',
               body: '帮助团队更快准备安全审查和采购所需资料。'
             }
           ]
@@ -1203,10 +1203,10 @@ const siteContent: Record<AppLocale, SiteContent> = {
     },
     contact: {
       seo: {
-        title: 'JClaw Contact | 演示咨询与适配度讨论',
-        description: '联系 JClaw，讨论 Self-Hosted 适配度、Cloud roadmap 兴趣以及第一批落地场景。'
+        title: 'JClaw | 演示咨询与适配度讨论',
+        description: '联系 JClaw，讨论 Self-Hosted 适配度、Cloud 路线图兴趣以及第一批落地场景。'
       },
-      eyebrow: 'Contact',
+      eyebrow: '联系咨询',
       title: '先把运营形态理清楚，再谈下一步。',
       intro:
         '在产品早期，最有价值的沟通不是立刻谈价格，而是先弄清楚部署方式、数据类型和运维责任由谁承担。',

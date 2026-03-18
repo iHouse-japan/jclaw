@@ -5,10 +5,12 @@
     "cloud": "クラウド計画",
     "security": "安全性",
     "contact": "相談",
-    "github": "GitHub"
+    "github": "GitHub",
+    "menuOpen": "メニューを開く",
+    "menuClose": "メニューを閉じる"
   },
   "language": {
-    "label": "Language",
+    "label": "言語切替",
     "ja": "JP",
     "en": "EN",
     "zh-cn": "简中"
@@ -25,7 +27,7 @@
     "brandTagline": "Japan-first AI Agent",
     "cloudPlanned": "公式クラウド計画",
     "openSource": "公開版",
-    "footerNote": "現在の公開デモで確認できる提供範囲のみを記載し、未提供機能は roadmap として扱います。"
+    "footerNote": "現在の公開デモで確認できる提供範囲のみを記載し、未提供機能は将来計画として扱います。"
   },
   "section": {
     "launch": "相談導線"

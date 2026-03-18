@@ -1,6 +1,7 @@
 import {getTranslations} from 'next-intl/server';
 import {Link} from '@/i18n/navigation';
 import {LanguageSwitcher} from './LanguageSwitcher';
+import {MobileNavigation} from './MobileNavigation';
 
 export async function SiteHeader() {
   const t = await getTranslations();
@@ -16,23 +17,27 @@ export async function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="main-nav" aria-label="Primary">
-          <Link className="main-nav__link" href="/">{t('nav.overview')}</Link>
-          <Link className="main-nav__link" href="/self-hosted">{t('nav.selfHosted')}</Link>
-          <Link className="main-nav__link" href="/cloud">{t('nav.cloud')}</Link>
-          <Link className="main-nav__link" href="/security">{t('nav.security')}</Link>
-          <Link className="main-nav__link" href="/contact">{t('nav.contact')}</Link>
-          <a
-            className="main-nav__github"
-            href="https://github.com/iHouse-japan/jclaw"
-            target="_blank"
-            rel="noreferrer"
-          >
-            {t('nav.github')}
-          </a>
-        </nav>
+        <div className="site-header__desktop">
+          <nav className="main-nav" aria-label="Primary">
+            <Link className="main-nav__link" href="/">{t('nav.overview')}</Link>
+            <Link className="main-nav__link" href="/self-hosted">{t('nav.selfHosted')}</Link>
+            <Link className="main-nav__link" href="/cloud">{t('nav.cloud')}</Link>
+            <Link className="main-nav__link" href="/security">{t('nav.security')}</Link>
+            <Link className="main-nav__link" href="/contact">{t('nav.contact')}</Link>
+            <a
+              className="main-nav__github"
+              href="https://github.com/iHouse-japan/jclaw"
+              target="_blank"
+              rel="noreferrer"
+            >
+              {t('nav.github')}
+            </a>
+          </nav>
 
-        <LanguageSwitcher />
+          <LanguageSwitcher />
+        </div>
+
+        <MobileNavigation />
       </div>
     </header>
   );

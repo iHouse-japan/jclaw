@@ -5,7 +5,9 @@
     "cloud": "Cloud Roadmap",
     "security": "Security",
     "contact": "Contact",
-    "github": "GitHub"
+    "github": "GitHub",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu"
   },
   "language": {
     "label": "Language",
