@@ -157,7 +157,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
           eyebrow: '運用イメージ',
           title: '問い合わせ受付からレビュー判断までを、一つの運用画面で見せる。',
           body:
-            '静的なプレビューで製品像を見せつつ、現時点で重要なのは管理感・説明責任・日本語運用の見通しであることを伝える。',
+            '入口、確認フロー、責任分界をひと目で整理し、管理感・説明責任・日本語運用の見通しを初見で伝える。',
           metrics: [
             {label: '入口', value: 'LINE-native'},
             {label: '現在ルート', value: 'Self-Hosted'},
@@ -292,9 +292,9 @@ const siteContent: Record<AppLocale, SiteContent> = {
         }
       ],
       cta: {
-        title: 'まずは展示と相談から始める。',
-        body: '初期段階では、価格よりも「安全に試せる」「日本語で相談できる」「将来の運用形態が選べる」を明確に伝える。',
-        footnote: 'Cloud の表現はすべて roadmap 前提。未提供機能は将来計画としてのみ記載します。'
+        title: 'まずは導入相談から始める。',
+        body: '価格表を急いで出すより先に、「どの環境で動かすか」「誰が確認するか」「どこまで公式側が支えるか」を整理した方が導入判断は早くなります。',
+        footnote: 'Cloud に関する内容は、現在提供中の機能と混同しないよう将来計画として区別して案内します。'
       }
     },
     selfHosted: {
@@ -307,7 +307,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
       intro:
         'JClaw Self-Hosted は、現在もっとも現実的に試せる導入形態です。PoC、閉域環境、社内検証に向けて、運用の主導権を自社に残せます。',
       note:
-        '現在の runtime リポジトリはこのルートを支える土台です。公式サイトとは分離し、将来的には専用サイトリポジトリに移行する前提で進めます。',
+        '現在実際に導入を検討できるのはこのルートです。自社管理を重視する企業は、まず Self-Hosted を基準に適合性を判断できます。',
       sections: [
         {
           title: '向いているケース',
@@ -350,14 +350,14 @@ const siteContent: Record<AppLocale, SiteContent> = {
     },
     cloud: {
       seo: {
-        title: 'JClaw Cloud | 公式托管 AI Agent roadmap',
-        description: 'JClaw Cloud は、ログ、権限、運用監視、日本語サポートをまとめる予定の公式托管版 roadmap です。'
+        title: 'JClaw Cloud | 公式クラウド提供計画',
+        description: 'JClaw Cloud は、ログ、権限、運用監視、日本語サポートをまとめる将来の公式クラウド提供計画です。'
       },
       eyebrow: '公式クラウド計画',
       title: '日本向けに運用しやすい、公式托管版を構想する。',
       intro:
         'JClaw Cloud は、運用の手離れを良くしながら、日本企業が必要とする説明責任と管理性を両立させるための将来像です。',
-      note: 'このページは roadmap 表示です。未提供機能を既存機能のようには扱いません。',
+      note: 'このページでは、将来提供を目指す内容のみを案内し、未提供機能を現行機能として扱いません。',
       sections: [
         {
           title: 'Cloud で提供したい価値',
@@ -395,7 +395,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
       ],
       cta: {
         title: 'Cloud に興味がある企業から先に話を聞く。',
-        body: 'どの管理機能が必要か、何を公式側に任せたいかを先に把握し、roadmap の優先順位に反映する。'
+        body: 'どの管理機能が必要か、何を公式側に任せたいかを把握し、今後の提供方針に反映します。'
       }
     },
     security: {
@@ -437,20 +437,20 @@ const siteContent: Record<AppLocale, SiteContent> = {
           title: '現時点の表現方針',
           bullets: [
             '現在の提供範囲を越える主張はしない',
-            'Cloud の表現は roadmap または planned に限定する',
+            'Cloud の表現は将来計画に限定する',
             '認証・契約・SLA など確定していない項目は載せない'
           ]
         }
       ],
       cta: {
         title: '安全性の説明を先に見たい企業向けの導線を残す。',
-        body: '営業資料や提案資料を作る前でも、サイト上で最低限の考え方が見える状態を作る。'
+        body: '営業資料や提案資料を作る前でも、サイト上で最低限の判断材料が見える状態を作る。'
       }
     },
     contact: {
       seo: {
-        title: 'JClaw | デモ相談と初期導入の相談',
-        description: 'JClaw のデモ相談ページ。Self-Hosted 検討、クラウド計画の相談、導入シーンの整理を受け付けます。'
+        title: 'JClaw | 初期導入と適合性の相談',
+        description: 'JClaw の導入相談ページ。Self-Hosted 検討、クラウド提供計画への関心、導入シーンの整理を受け付けます。'
       },
       eyebrow: '相談',
       title: 'まずは、どの導入形態が合うかを整理する。',
@@ -465,7 +465,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
               body: '自社サーバー運用、PoC、閉域環境前提の検討に向いているかを整理する。'
             },
             {
-              title: 'Cloud roadmap 相談',
+              title: 'Cloud 導入への関心',
               body: '将来の托管版に何を期待するか、何を公式に任せたいかをヒアリングする。'
             },
             {
@@ -485,8 +485,8 @@ const siteContent: Record<AppLocale, SiteContent> = {
         }
       ],
       cta: {
-        title: 'デモ相談は日本語で進める。',
-        body: '現時点ではメールベースの軽い相談導線に留め、フォーム用の処理系は現在の実行基盤に混ぜない。'
+        title: '導入相談は日本語で進める。',
+        body: '初回相談では、用途、導入形態、必要な支援範囲が整理できれば十分です。'
       }
     }
   },
@@ -534,7 +534,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
           eyebrow: 'Operational preview',
           title: 'Show the operator workflow, not just the brand story.',
           body:
-            'The preview is intentionally static. Its job is to communicate control, review and deployment shape before a managed product exists.',
+            'Use the preview to clarify entry point, review flow and ownership so visitors understand the operating model at a glance.',
           metrics: [
             {label: 'Entry', value: 'LINE-native'},
             {label: 'Control', value: 'Self-Hosted'},
@@ -573,7 +573,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
         }
       },
       trustIntro:
-        'Japanese teams need answers about data, review responsibility and procurement fit before they believe a product can move beyond a demo.',
+        'Japanese teams need answers about data, review responsibility and procurement fit before they treat a product as ready for real evaluation.',
       trustStrip: [
         {
           title: 'Data Handling',
@@ -671,7 +671,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
       cta: {
         title: 'Start with a conversation, not a pricing page.',
         body: 'At this stage, the job of the site is to show that the product can be trialed safely, discussed in Japanese and extended into the right operating model later.',
-        footnote: 'All cloud language on this prototype is roadmap language only.'
+        footnote: 'Cloud capabilities remain clearly marked as planned and separate from what is available today.'
       }
     },
     selfHosted: {
@@ -684,7 +684,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
       intro:
         'JClaw Self-Hosted is the most realistic way to start today. It keeps deployment and operational control with the team while enabling pilots and internal validation.',
       note:
-        'The current runtime repository supports this route. The website prototype is intentionally being separated so product messaging does not stay coupled to bot runtime code.',
+        'This is the route teams can evaluate today. It is the right starting point when control, internal review and local deployment matter first.',
       sections: [
         {
           title: 'Best fit',
@@ -772,7 +772,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
       ],
       cta: {
         title: 'Use the roadmap page to gather early demand.',
-        body: 'The right question now is what companies want the official service to own, not how many features can be listed.'
+        body: 'The right question now is what companies want the official service to own, so the managed route can be shaped around real operational demand.'
       }
     },
     security: {
@@ -821,13 +821,13 @@ const siteContent: Record<AppLocale, SiteContent> = {
       ],
       cta: {
         title: 'Give buyers a trust page before a sales deck.',
-        body: 'Even at prototype stage, clear language about risk and scope reduces unnecessary friction.'
+        body: 'Clear language about risk, scope and responsibility reduces unnecessary friction early in evaluation.'
       }
     },
     contact: {
       seo: {
-        title: 'JClaw Contact | Demo and fit discussion',
-        description: 'Contact JClaw to discuss self-hosted fit, cloud roadmap interest and the right use case to start with.'
+        title: 'JClaw Contact | Deployment and fit discussion',
+        description: 'Contact JClaw to discuss self-hosted fit, cloud plans and the right use case to start with.'
       },
       eyebrow: 'Contact',
       title: 'Start by clarifying the operating model.',
@@ -842,7 +842,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
               body: 'Check whether internal hosting and local model deployment match the use case and data profile.'
             },
             {
-              title: 'Cloud roadmap interest',
+              title: 'Cloud deployment interest',
               body: 'Understand what teams want the official managed route to handle in the future.'
             },
             {
@@ -863,7 +863,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
       ],
       cta: {
         title: 'Keep the contact path simple.',
-        body: 'For the prototype stage, email is enough. Do not bolt a custom form backend onto the current runtime repository.'
+        body: 'Email is enough for an initial conversation. Start by aligning use case, deployment shape and support expectations.'
       }
     }
   },
@@ -911,7 +911,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
           eyebrow: '运营预览',
           title: '把运营者真正关心的流程和边界，直接放进产品预览里。',
           body:
-            '这里用静态预览展示产品感，重点不是假装功能已经上线，而是把入口、审核、控制权和路线图边界讲清楚。',
+            '把入口、审核流程、控制权和责任边界直接摆出来，让访问者一眼就能理解产品如何进入真实运营。',
           metrics: [
             {label: '入口', value: 'LINE-native'},
             {label: '当前路线', value: 'Self-Hosted'},
@@ -1046,9 +1046,9 @@ const siteContent: Record<AppLocale, SiteContent> = {
         }
       ],
       cta: {
-        title: '先从对话与演示开始，而不是先上价格页。',
-        body: '这个阶段官网最重要的任务，是证明产品可以被安全试用、可以用日语沟通，也能在未来延展到合适的运营模式。',
-        footnote: '当前原型中所有 Cloud 文案都严格按 roadmap 表达。'
+        title: '先从导入沟通开始，而不是先上价格页。',
+        body: '现阶段官网更重要的任务，是先把产品如何安全引入、如何用日语支持、以及未来可选的运营形态讲清楚。',
+        footnote: 'Cloud 相关内容均按未来规划单独标注，不与当前可用能力混写。'
       }
     },
     selfHosted: {
@@ -1061,7 +1061,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
       intro:
         'JClaw Self-Hosted 是当前最适合先落地的方式。它让团队可以在自有环境中完成试点、验证和早期运营，而不必先依赖托管服务。',
       note:
-        '当前 runtime 仓库服务的是这条路线。官网原型刻意与 runtime 分离，以免产品表达继续和 bot 运行代码耦合在一起。',
+        '当前真正可以进入导入评估的是这条路线。对控制权、数据处理和内部审查要求更高的团队，应先从 Self-Hosted 判断适配度。',
       sections: [
         {
           title: '适合什么情况',
@@ -1104,14 +1104,14 @@ const siteContent: Record<AppLocale, SiteContent> = {
     },
     cloud: {
       seo: {
-        title: 'JClaw Cloud | 官方云托管路线 roadmap',
+        title: 'JClaw Cloud | 官方云托管规划',
         description: 'JClaw Cloud 是计划中的官方托管路线，目标是集中日志、权限、运营可视化和日语支持。'
       },
       eyebrow: '官方云路线图',
       title: '面向日本运营现实而设计的官方托管路线。',
       intro:
         'JClaw Cloud 是未来面向不希望自行承担全部运维成本的团队所设计的官方托管方案，同时保留对信任和责任边界的清晰说明。',
-      note: '本页只描述 roadmap 意图，不把未交付功能当成现有能力。 ',
+      note: '本页只介绍未来计划提供的内容，不把未交付能力写成当前已经可用。 ',
       sections: [
         {
           title: '为什么需要托管路线',
@@ -1149,7 +1149,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
       ],
       cta: {
         title: '先用 roadmap 页面收集真实需求。',
-        body: '当前更重要的问题不是堆多少功能，而是弄清楚企业真正希望官方托管承担什么。'
+        body: '当前更重要的不是堆功能，而是弄清楚企业真正希望官方托管承担哪些职责。'
       }
     },
     security: {
@@ -1198,13 +1198,13 @@ const siteContent: Record<AppLocale, SiteContent> = {
       ],
       cta: {
         title: '在销售资料之前，先给出可信的安全页面。',
-        body: '哪怕还是原型阶段，只要风险与边界说清楚，就能减少很多不必要的阻力。'
+        body: '只要把风险、边界和责任提前讲清楚，就能减少很多不必要的沟通阻力。'
       }
     },
     contact: {
       seo: {
-        title: 'JClaw | 演示咨询与适配度讨论',
-        description: '联系 JClaw，讨论 Self-Hosted 适配度、Cloud 路线图兴趣以及第一批落地场景。'
+        title: 'JClaw | 导入咨询与适配度讨论',
+        description: '联系 JClaw，讨论 Self-Hosted 适配度、Cloud 托管需求以及第一批落地场景。'
       },
       eyebrow: '联系咨询',
       title: '先把运营形态理清楚，再谈下一步。',
@@ -1219,7 +1219,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
               body: '判断自部署和本地模型方案是否符合当前业务场景与数据类型。'
             },
             {
-              title: 'Cloud roadmap 兴趣',
+              title: 'Cloud 托管需求',
               body: '了解企业未来希望官方托管承担哪些部分。'
             },
             {
@@ -1240,7 +1240,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
       ],
       cta: {
         title: '联系方式保持简单。',
-        body: '在原型阶段，邮箱咨询已经足够，不要把自定义表单后端硬塞进当前 runtime 仓库。'
+        body: '初次沟通用邮件已经足够，先把使用场景、部署方式和支持诉求讲清楚即可。'
       }
     }
   }

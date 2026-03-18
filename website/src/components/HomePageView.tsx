@@ -27,7 +27,7 @@ export async function HomePageView({locale}: HomePageViewProps) {
           <p className="hero__note">{content.hero.note}</p>
 
           <div className="hero__actions">
-            <a className="button button--primary" href="mailto:hello@jclaw.jp?subject=JClaw%20Demo%20Request">
+            <a className="button button--primary" href="mailto:hello@jclaw.jp?subject=JClaw%20Consultation">
               {t('cta.requestDemo')}
             </a>
             <a

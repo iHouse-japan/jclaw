@@ -16,10 +16,10 @@
     "zh-cn": "简中"
   },
   "cta": {
-    "requestDemo": "デモ相談",
+    "requestDemo": "導入相談",
     "viewOss": "OSS を見る",
     "contactTeam": "相談する",
-    "joinWaitlist": "先行相談をする",
+    "joinWaitlist": "クラウド相談をする",
     "reviewSecurity": "安全性を見る",
     "seeDeployment": "導入方法を見る"
   },
@@ -27,9 +27,9 @@
     "brandTagline": "Japan-first AI Agent",
     "cloudPlanned": "公式クラウド計画",
     "openSource": "公開版",
-    "footerNote": "現在の公開デモで確認できる提供範囲のみを記載し、未提供機能は将来計画として扱います。"
+    "footerNote": "現在案内している内容は、現時点で説明できる提供範囲に基づいています。将来提供予定の内容は計画として区別して記載します。"
   },
   "section": {
-    "launch": "相談導線"
+    "launch": "導入相談"
   }
 }

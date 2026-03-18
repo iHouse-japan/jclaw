@@ -16,10 +16,10 @@
     "zh-cn": "简中"
   },
   "cta": {
-    "requestDemo": "Request demo",
+    "requestDemo": "Request consultation",
     "viewOss": "View OSS",
     "contactTeam": "Contact team",
-    "joinWaitlist": "Join waitlist",
+    "joinWaitlist": "Discuss cloud plans",
     "reviewSecurity": "Review security",
     "seeDeployment": "See deployment"
   },
@@ -27,9 +27,9 @@
     "brandTagline": "Japan-first AI Agent",
     "cloudPlanned": "Official cloud roadmap",
     "openSource": "Open Source",
-    "footerNote": "This public demo only describes capabilities already shown in the prototype. Planned items remain marked as roadmap."
+    "footerNote": "This site reflects the product scope we can describe today. Future cloud capabilities remain clearly marked as planned."
   },
   "section": {
-    "launch": "Next Step"
+    "launch": "Get Started"
   }
 }

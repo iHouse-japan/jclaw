@@ -16,10 +16,10 @@
     "zh-cn": "简中"
   },
   "cta": {
-    "requestDemo": "申请演示",
+    "requestDemo": "导入咨询",
     "viewOss": "查看 OSS",
     "contactTeam": "联系团队",
-    "joinWaitlist": "加入候补名单",
+    "joinWaitlist": "咨询云路线",
     "reviewSecurity": "查看安全说明",
     "seeDeployment": "查看部署方式"
   },
@@ -27,9 +27,9 @@
     "brandTagline": "Japan-first AI Agent",
     "cloudPlanned": "官方云路线图",
     "openSource": "开源版",
-    "footerNote": "当前公开 demo 仅描述原型中已展示的能力，规划中的内容继续按路线图标注。"
+    "footerNote": "当前官网仅介绍现阶段可以正式说明的产品范围，未来云能力会继续明确标注为规划。"
   },
   "section": {
-    "launch": "咨询入口"
+    "launch": "导入咨询"
   }
 }

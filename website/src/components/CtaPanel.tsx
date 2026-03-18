@@ -24,11 +24,11 @@ export async function CtaPanel({
         ]
       : mode === 'waitlist-contact'
         ? [
-            {href: 'mailto:hello@jclaw.jp?subject=JClaw%20Cloud%20Roadmap', label: t('cta.joinWaitlist'), kind: 'primary' as const},
+            {href: 'mailto:hello@jclaw.jp?subject=JClaw%20Cloud%20Inquiry', label: t('cta.joinWaitlist'), kind: 'primary' as const},
             {href: '/contact', label: t('cta.contactTeam'), kind: 'secondary' as const}
           ]
         : [
-            {href: 'mailto:hello@jclaw.jp?subject=JClaw%20Demo%20Request', label: t('cta.requestDemo'), kind: 'primary' as const},
+            {href: 'mailto:hello@jclaw.jp?subject=JClaw%20Consultation', label: t('cta.requestDemo'), kind: 'primary' as const},
             {href: 'https://github.com/iHouse-japan/jclaw', label: t('cta.viewOss'), kind: 'secondary' as const}
           ];
 
