@@ -60,12 +60,12 @@ export async function HomePageView({locale}: HomePageViewProps) {
         <TrustStrip items={content.trustStrip} />
       </section>
 
-      <section className="section">
+      <section className="section section--why-japan">
         <SectionIntro eyebrow={content.labels.whyJapan} title={content.labels.whyJapanTitle} intro={content.whyJapanIntro} />
         <CardGrid cards={content.whyJapanCards} />
       </section>
 
-      <section className="section section--split">
+      <section className="section section--split section--routes">
         <SectionIntro eyebrow={content.labels.routes} title={content.labels.routesTitle} intro={content.routesIntro} />
         <div className="route-grid">
           <article className="route-card">
@@ -83,7 +83,7 @@ export async function HomePageView({locale}: HomePageViewProps) {
         </div>
       </section>
 
-      <section className="section">
+      <section className="section section--overview">
         <SectionIntro
           eyebrow={content.labels.productOverview}
           title={content.labels.productOverviewTitle}
@@ -92,7 +92,7 @@ export async function HomePageView({locale}: HomePageViewProps) {
         <CardGrid cards={content.productOverviewCards} columns="two" variant="feature" />
       </section>
 
-      <section className="section">
+      <section className="section section--use-cases">
         <SectionIntro eyebrow={content.labels.useCases} title={content.labels.useCasesTitle} />
         <CardGrid cards={content.useCases} />
       </section>

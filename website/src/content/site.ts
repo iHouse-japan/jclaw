@@ -188,7 +188,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
               tone: 'indigo'
             },
             {
-              title: 'Cloud は roadmap として明記する',
+              title: 'Cloud は将来計画として案内する',
               body: '未提供の運用機能は将来計画としてのみ扱う。',
               tone: 'neutral'
             }
@@ -249,7 +249,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
         },
         cloud: {
           title: 'JClaw Cloud',
-          intro: '公式が提供予定の托管版。現時点では roadmap として案内し、既成事実のようには見せない。',
+          intro: '公式が構想するクラウド提供ルート。現時点では将来計画として案内し、既成事実のようには見せない。',
           bullets: [
             'ログ、権限、運用監視の管理面を集約',
             '複数チーム運用や商用導入を支援',
@@ -258,7 +258,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
         }
       },
       productOverviewIntro:
-        '主流のオープンソース製品サイトは理念だけでなく、運用にどう入るかも素早く示します。JClaw も導入と運用の理解枠を先に見せます。',
+        '導入前に、どこから使い始め、誰が確認し、何を自社で持つかを短時間で理解できる構成にする。',
       productOverviewCards: [
         {
           title: 'LINE を入口に据える',
@@ -531,14 +531,14 @@ const siteContent: Record<AppLocale, SiteContent> = {
           'Japan-first support'
         ],
         preview: {
-          eyebrow: 'Operational preview',
-          title: 'Show the operator workflow, not just the brand story.',
+          eyebrow: 'Operator view',
+          title: 'Make the operating model visible at a glance.',
           body:
-            'Use the preview to clarify entry point, review flow and ownership so visitors understand the operating model at a glance.',
+            'Clarify entry point, human review and ownership before a buyer has to read deep into the page.',
           metrics: [
             {label: 'Entry', value: 'LINE-native'},
             {label: 'Control', value: 'Self-Hosted'},
-            {label: 'Future', value: 'Cloud roadmap'}
+            {label: 'Future', value: 'Cloud plan'}
           ],
           workflowLabel: 'Operator flow',
           workflowSteps: [
@@ -565,8 +565,8 @@ const siteContent: Record<AppLocale, SiteContent> = {
               tone: 'indigo'
             },
             {
-              title: 'Keep roadmap language precise',
-              body: 'Use cloud language to describe direction, not current delivery.',
+              title: 'Keep cloud scope precise',
+              body: 'Describe the cloud route as future service scope, not as something available today.',
               tone: 'neutral'
             }
           ]
@@ -626,7 +626,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
         },
         cloud: {
           title: 'JClaw Cloud',
-          intro: 'A planned official managed route. It is described as roadmap only, not as a currently shipped product.',
+          intro: 'A planned official managed route. It is presented as future service scope, not as a product available today.',
           bullets: [
             'Centralize logs, permissions and operational visibility',
             'Support multi-team rollout and commercial deployment',
@@ -635,7 +635,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
         }
       },
       productOverviewIntro:
-        'A stronger open source product site quickly explains how the product will be operated, governed and introduced inside a team. JClaw should do the same.',
+        'The homepage should quickly explain where the product enters a team, who stays in control and how adoption can start safely.',
       productOverviewCards: [
         {
           title: 'LINE-native entry',
@@ -942,8 +942,8 @@ const siteContent: Record<AppLocale, SiteContent> = {
               tone: 'indigo'
             },
             {
-              title: 'Cloud 文案保持克制',
-              body: '所有云相关表述继续按 roadmap 语义呈现。',
+              title: 'Cloud 范围表达保持克制',
+              body: '所有云相关描述都按未来规划表达。',
               tone: 'neutral'
             }
           ]
@@ -1003,7 +1003,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
         },
         cloud: {
           title: 'JClaw Cloud',
-          intro: '计划中的官方托管路线。当前只按 roadmap 展示，不把未上线功能包装成已提供能力。',
+          intro: '规划中的官方托管路线。当前只作为未来提供方向说明，不把未上线能力包装成现有产品。',
           bullets: [
             '集中管理日志、权限和运营可视化',
             '支持多团队导入与商业化落地',
@@ -1012,7 +1012,7 @@ const siteContent: Record<AppLocale, SiteContent> = {
         }
       },
       productOverviewIntro:
-        '更成熟的开源产品官网不会只讲愿景，也会把产品如何进入团队、如何运营、如何被解释给审批方看清楚。JClaw 首页也应该这样。',
+        '首页应该让访问者迅速理解产品从哪里进入团队、谁负责审核，以及如何以可控方式开始导入。',
       productOverviewCards: [
         {
           title: '让 LINE 成为真实入口',

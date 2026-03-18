@@ -40,21 +40,29 @@ export function HeroPreview({
   return (
     <aside className="hero-preview">
       <div className="hero-preview__frame">
-        <div className="hero-preview__header">
-          <div>
-            <p className="eyebrow">{eyebrow}</p>
-            <h2>{title}</h2>
+        <div className="hero-preview__toolbar">
+          <div className="hero-preview__toolbar-brand">
+            <span className="hero-preview__toolbar-dot" />
+            <strong>JClaw</strong>
+            <span>Operator Console</span>
           </div>
-          <p>{body}</p>
+
+          <div className="hero-preview__toolbar-badges">
+            {metrics.map((metric) => (
+              <span key={metric.label} className="hero-preview__toolbar-badge">
+                <small>{metric.label}</small>
+                <strong>{metric.value}</strong>
+              </span>
+            ))}
+          </div>
         </div>
 
-        <div className="hero-preview__metrics">
-          {metrics.map((metric) => (
-            <article key={metric.label} className="hero-preview__metric">
-              <span>{metric.label}</span>
-              <strong>{metric.value}</strong>
-            </article>
-          ))}
+        <div className="hero-preview__header">
+          <div className="hero-preview__summary">
+            <p className="eyebrow">{eyebrow}</p>
+            <h2>{title}</h2>
+            <p>{body}</p>
+          </div>
         </div>
 
         <div className="hero-preview__workspace">
@@ -62,11 +70,16 @@ export function HeroPreview({
             <div className="hero-preview__section-head">
               <span>{workflowLabel}</span>
             </div>
-            <ol>
-              {workflowSteps.map((step) => (
-                <li key={step}>{step}</li>
+            <div className="hero-preview__steps">
+              {workflowSteps.map((step, index) => (
+                <article key={step} className="hero-preview__step">
+                  <span className="hero-preview__step-index">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <p>{step}</p>
+                </article>
               ))}
-            </ol>
+            </div>
           </section>
 
           <section className="hero-preview__status">
@@ -76,7 +89,9 @@ export function HeroPreview({
             <div className="hero-preview__status-list">
               {statusItems.map((item) => (
                 <div key={item.name} className="hero-preview__status-item">
-                  <strong>{item.name}</strong>
+                  <div className="hero-preview__status-copy">
+                    <strong>{item.name}</strong>
+                  </div>
                   <span>{item.state}</span>
                 </div>
               ))}
