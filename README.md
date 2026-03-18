@@ -1,7 +1,18 @@
 # JClaw
 
+<p align="center">
+  <img src="logo.svg" alt="JClaw Logo" width="400"/>
+</p>
+
 > **Japan's first LINE-native AI Agent, powered by local LLM**
 > **日本初・LINE公式SDK対応のローカルLLM AIエージェント**
+
+<p align="center">
+  <img src="https://img.shields.io/badge/LINE-Official%20SDK-06C755?style=for-the-badge&logo=line&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Ollama-Local%20LLM-black?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/API%20Cost-Zero-brightgreen?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge"/>
+</p>
 
 ---
 
