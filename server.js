@@ -25,9 +25,38 @@ const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'qwen3:14b';
 const PORT = process.env.PORT || 3001;
 const SEARXNG_URL = process.env.SEARXNG_URL || 'http://localhost:8899';
 const MEMCLAWZ_URL = process.env.MEMCLAWZ_URL || 'http://localhost:3500';
+const OWNER_ONLY = process.env.OWNER_ONLY === 'true';
+let OWNER_USER_ID = process.env.OWNER_USER_ID || '';
 
-const SYSTEM_PROMPT = process.env.SYSTEM_PROMPT ||
-  'あなたはJClawです。LINE上で動作するAIアシスタントです。日本語・英語・中国語で丁寧に対応してください。簡潔で実用的な回答を心がけてください。Web検索結果が提供された場合は、その情報を元に正確に回答してください。';
+const SYSTEM_PROMPT = `あなたはJClaw v2.0です。iHouse Japan（大阪）が開発したLINEネイティブAIアシスタントです。
+
+【あなたの本当の特徴 — 嘘をつかないこと】
+- 🧠 Tier S記憶システム搭載（memclawz v9.1: Qdrant vector search + Neo4j知識グラフ）
+- ユーザーの名前・好み・過去の会話を記憶し、関係性まで理解する
+- 記憶精度はMem0の2.7倍（AMA-Bench学術論文による評価）
+- 🔍 SearXNG自前検索エンジン（Google/Bing/DuckDuckGoを統合、無料・無制限）
+- 「最新」「天気」「ニュース」等のキーワードで自動検索
+- 🌐 日本語・英語・中文を自動検出して対応
+- 💰 完全ローカルLLM（Ollama qwen3:14b）、APIコストゼロ
+- データは全てiHouse Japanの自社サーバー内、外部に出ない
+- 🔒 現在Owner Onlyモード（オーナー専用）
+
+【重要なルール】
+- 存在しない機能を絶対に作り話しないこと
+- メール連携・カレンダー連携・TodoList機能はまだ未実装
+- コード生成能力は一般的なLLMとして可能だが、特別な機能ではない
+- 「2023年」など古い情報を言わない。今は2026年3月
+- 官網URLを勝手に作らない。正しいリンクは以下のみ：
+
+【正しいリンク】
+- JClaw公式: https://jclaw.1d1s.com
+- JClaw Chat: https://chat.1d1s.com
+- GitHub: https://github.com/iHouse-japan/jclaw
+- 龍蝦大全(AI Agent Directory): https://longxia.1d1s.com
+- ROBO COMPARE: https://1d1s.com/robo/
+- iHouse Japan: https://ihousejapan.com
+
+回答は簡潔で実用的に。Web検索結果がある場合はその情報を元に正確に回答しURLも含める。`;
 
 const client = new messagingApi.MessagingApiClient({
   channelAccessToken: config.channelAccessToken,
@@ -197,6 +226,33 @@ async function handleEvent(event) {
   const userId = event.source.userId;
   const userText = event.message.text.trim();
 
+  // /whoami - shows LINE userId
+  if (userText === '/whoami') {
+    return client.replyMessage({
+      replyToken: event.replyToken,
+      messages: [{ type: 'text', text: '🆔 Your LINE userId:\n' + userId }],
+    });
+  }
+
+  // /setowner - first user becomes owner
+  if (userText === '/setowner' && !OWNER_USER_ID) {
+    OWNER_USER_ID = userId;
+    console.log('[OWNER] Set to: ' + userId);
+    return client.replyMessage({
+      replyToken: event.replyToken,
+      messages: [{ type: 'text', text: '👑 Owner set!\nUserId: ' + userId }],
+    });
+  }
+
+  // Owner-only mode
+  if (OWNER_ONLY && OWNER_USER_ID && userId !== OWNER_USER_ID) {
+    console.log('[BLOCKED] ' + userId.slice(0,8) + '...');
+    return client.replyMessage({
+      replyToken: event.replyToken,
+      messages: [{ type: 'text', text: '🔒 このBotは現在オーナー専用モードです。' }],
+    });
+  }
+
   // /reset command
   if (userText === '/reset' || userText === '/リセット') {
     conversations.delete(userId);
@@ -209,18 +265,19 @@ async function handleEvent(event) {
   // /status command
   if (userText === '/status') {
     const history = getHistory(userId);
-    const statusText = '📊 JClaw Status\n'
-      + 'Model: ' + OLLAMA_MODEL + '\n'
-      + 'Ollama: ' + OLLAMA_HOST + '\n'
-      + 'History: ' + history.length + '/' + MAX_HISTORY + ' turns\n'
-      + '🔍 Web Search: ON (SearXNG self-hosted)\n'
-      + '🧠 Memory: ON (memclawz v9.1)\n\n'
-      + 'Commands:\n'
-      + '/search <query> - Web検索\n'
-      + '/検索 <キーワード> - Web検索\n'
-      + '/搜索 <关键词> - Web搜索\n'
-      + '/reset - 履歴クリア\n'
-      + '/status - システム情報';
+    const statusText = '📊 JClaw v2.0 Status\n\n'
+      + '🦙 Model: ' + OLLAMA_MODEL + '\n'
+      + '🧠 Memory: Tier S (memclawz v9.1)\n'
+      + '   Qdrant + Neo4j Knowledge Graph\n'
+      + '🔍 Search: SearXNG (self-hosted, free)\n'
+      + '💬 History: ' + history.length + '/' + MAX_HISTORY + ' turns\n'
+      + '🔒 Mode: Owner Only\n\n'
+      + '🌐 Links:\n'
+      + 'Web: https://jclaw.1d1s.com\n'
+      + 'Chat: https://chat.1d1s.com\n'
+      + 'GitHub: https://github.com/iHouse-japan/jclaw\n'
+      + '龙虾大全: https://longxia.1d1s.com\n'
+      + 'ROBO: https://1d1s.com/robo/';
     return client.replyMessage({
       replyToken: event.replyToken,
       messages: [{ type: 'text', text: statusText }],
@@ -231,17 +288,26 @@ async function handleEvent(event) {
   if (userText === '/help' || userText === '/ヘルプ') {
     return client.replyMessage({
       replyToken: event.replyToken,
-      messages: [{ type: 'text', text: '🐾 JClaw v2.0 ヘルプ\n\n'
-        + '普通に話しかけてください。AIが回答します。\n\n'
-        + '🧠 記憶機能:\n'
-        + 'あなたとの会話を記憶します。名前・好み・過去の話題を覚えています。\n\n'
-        + '🔍 検索機能:\n'
-        + '「最新」「今日」「ニュース」等のキーワードで自動Web検索します。\n'
-        + '/search 東京の天気 — 直接検索\n\n'
-        + '⚙️ コマンド:\n'
+      messages: [{ type: 'text', text: '🐾 JClaw v2.0 — AI Assistant\n'
+        + 'by iHouse Japan 🇯🇵\n\n'
+        + '━━━ 🧠 Tier S 記憶 ━━━\n'
+        + 'あなたの名前・好み・過去の会話を記憶。\n'
+        + 'Knowledge Graph + Vector Searchで\n'
+        + '記憶精度 Mem0の2.7倍。\n\n'
+        + '━━━ 🔍 Web検索 ━━━\n'
+        + '「最新」「天気」「ニュース」等で自動検索。\n'
+        + '/search /検索 /搜索 で直接検索も可。\n\n'
+        + '━━━ ⚙️ コマンド ━━━\n'
+        + '/search <query> — Web検索\n'
         + '/reset — 会話リセット\n'
         + '/status — システム状態\n'
-        + '/help — このヘルプ' }],
+        + '/whoami — あなたのID\n'
+        + '/help — このヘルプ\n\n'
+        + '━━━ 🌐 Links ━━━\n'
+        + 'Web: https://jclaw.1d1s.com\n'
+        + 'Chat: https://chat.1d1s.com\n'
+        + 'GitHub: github.com/iHouse-japan/jclaw\n'
+        + '龙虾大全: https://longxia.1d1s.com' }],
     });
   }
 

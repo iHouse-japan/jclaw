@@ -1,149 +1,123 @@
-# JClaw v2.0
+# 🐾 JClaw v2.1 — LINE AI Agent with Tier S Memory
 
-<p align="center">
-  <img src="logo.png" alt="JClaw Logo" width="400"/>
-</p>
+<div align="center">
 
-> **Japan's first LINE-native AI Agent with Tier S memory, powered by local LLM**
-> **日本初・Tier S記憶システム搭載のLINEネイティブAIエージェント**
+**Japan's first LINE-native AI Agent with Tier S memory system.**
 
-<p align="center">
-  <img src="https://img.shields.io/badge/LINE-Official%20SDK-06C755?style=for-the-badge&logo=line&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Ollama-Local%20LLM-black?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Memory-Tier%20S-ff6b35?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/API%20Cost-Zero-brightgreen?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge"/>
-</p>
+🧠 Knowledge Graph + Vector Search | 🔍 Self-hosted Web Search | 💰 Zero API Cost | 🔒 Owner Mode
 
----
+[Website](https://jclaw.1d1s.com) · [Web Chat](https://chat.1d1s.com) · [龙虾大全](https://longxia.1d1s.com) · [ROBO COMPARE](https://1d1s.com/robo/)
 
-## 🇬🇧 English
+</div>
 
-### What is JClaw?
+## What's New in v2.1
 
-JClaw is an open-source AI Agent that runs entirely on your own server, integrated natively with the **LINE Messaging API**. It uses **Ollama** to serve local large language models (e.g. `qwen3:14b`), meaning **zero API costs**, **zero third-party dependencies**, and **complete data sovereignty** — all messages stay on your machine.
+- 🔒 **Owner-Only Mode** — Lock your bot to your LINE account only. Other users see "🔒 オーナー専用モード"
+- `/setowner` — First user to run this becomes the owner
+- `/whoami` — Show your LINE userId
+- 🌐 **Web Chat** — `chat.1d1s.com` — PWA, no LINE message limits, works on any browser
+- 📝 **Updated System Prompt** — JClaw now accurately describes its own capabilities, no hallucinated features
+- 🧠 **Per-user Memory Isolation** — Each LINE user gets their own memory space, never cross-contaminated
 
-Built and maintained by [iHouse Japan](https://github.com/iHouse-japan).
+## Features
 
----
+### Core
+- 💬 **LINE Official SDK** — `@line/bot-sdk`, production-ready, 200M+ users
+- 🏠 **Local LLM** — Ollama (qwen3:14b or any model), zero cloud dependency
+- 🌏 **Trilingual** — Japanese, English, Chinese auto-detection
 
-### ✨ Features
+### v2.0+ Memory System (Tier S)
+- 🧠 **13 Memory Types** — Fact, decision, preference, relationship, insight, procedure, event...
+- 🕸️ **Knowledge Graph** — Neo4j + Graphiti temporal graph (entity relationships + causality)
+- 🔍 **Vector Search** — Qdrant 768-dim + nomic-embed-text (meaning, not keywords)
+- 📊 **AMA-Bench** — 0.5722 score (2.7x better than Mem0's 0.2104)
 
-| Feature | Detail |
-|---|---|
-| 🟢 **LINE Official SDK** | Uses the official `@line/bot-sdk` — fully compliant, production-ready |
-| 🏠 **Local LLM via Ollama** | Runs `qwen3:14b` (or any Ollama model) on your own hardware |
-| 💰 **Zero API Cost** | No OpenAI, no Anthropic, no Claude API fees |
-| 🔒 **Zero Third-Party Dependencies** | No external AI services. Your data never leaves your server |
-| 📦 **Data Fully Local** | All conversation data stored and processed on-premises |
-| ⚡ **Lightweight & Fast** | Minimal stack — Node.js + Express + Ollama |
-| 💬 **Conversation Memory** | Per-user chat history maintained across messages |
-| 🧠 **Tier S Long-term Memory** | Powered by [memclawz](https://github.com/yoniassia/memclawz) — Qdrant vector search + Neo4j knowledge graph. Remembers users across sessions, auto-extracts facts/preferences/decisions. AMA-Bench 0.5722 (2.7x Mem0) |
-| 🔍 **Web Search (SearXNG)** | Free, unlimited web search via self-hosted SearXNG — no API key needed |
-| 🔄 **Special Commands** | `/reset` `/status` `/help` `/search <query>` `/検索` `/搜索` |
+### Web Search
+- 🔍 **SearXNG** — Self-hosted, aggregates Google/Bing/DuckDuckGo
+- 🤖 **Auto-detect** — Keywords like "最新", "天気", "news" trigger search automatically
+- 💰 **Free & Unlimited** — No API key, no rate limits
 
----
+### Security
+- 🔒 **Owner-Only Mode** — Restrict bot access to owner's LINE account
+- 🧠 **Per-user Memory** — Each user's memories are completely isolated
+- 🏠 **100% Self-hosted** — Data never leaves your server
 
-### 🚀 Quick Start
+## Commands
 
-#### Prerequisites
+| Command | Description |
+|---------|-------------|
+| `/search <query>` | Force web search (English) |
+| `/検索 <keyword>` | Web search (Japanese) |
+| `/搜索 <keyword>` | Web search (Chinese) |
+| `/reset` | Reset conversation history |
+| `/status` | System status & links |
+| `/help` | Show help |
+| `/whoami` | Show your LINE userId |
+| `/setowner` | Set yourself as bot owner (first-use only) |
 
-- Node.js 20+
-- [Ollama](https://ollama.ai) installed and running
-- `qwen3:14b` model pulled (`ollama pull qwen3:14b`)
-- [Docker](https://docker.com) (for SearXNG web search)
-- LINE Developer account + Messaging API channel
-- A public HTTPS endpoint (e.g. ngrok for dev, VPS for production)
+## Architecture
 
-#### Steps
+```
+LINE User → VPS (JClaw Node.js :3001)
+              ├── SSH Tunnel → Ollama qwen3:14b     (LLM)
+              ├── SSH Tunnel → SearXNG              (Web search)
+              └── SSH Tunnel → memclawz v9.1        (Memory)
+                                 ├── Qdrant         (vector 768-dim)
+                                 ├── Neo4j          (knowledge graph)
+                                 └── Ollama         (enrichment)
+```
+
+## Quick Start
 
 ```bash
+# Clone & install
 git clone https://github.com/iHouse-japan/jclaw.git
-cd jclaw
-npm install
-cp .env.example .env
-# Fill in LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN
+cd jclaw && npm install && cp .env.example .env
+# Edit .env with your LINE credentials
 
-# Start SearXNG (free web search engine)
+# Start search + memory services (Docker)
 docker compose up -d searxng
-
-# Start JClaw
-npm start
-```
-
----
-
-### 🔑 Environment Variables
-
-| Variable | Description | Example |
-|---|---|---|
-| `LINE_CHANNEL_SECRET` | LINE channel secret | `abc123...` |
-| `LINE_CHANNEL_ACCESS_TOKEN` | LINE channel access token | `xyz789...` |
-| `OLLAMA_HOST` | Ollama API base URL | `http://localhost:11434` |
-| `OLLAMA_MODEL` | Model to use | `qwen3:14b` |
-| `PORT` | Server port | `3001` |
-| `SEARXNG_URL` | SearXNG search URL | `http://localhost:8899` |
-| `MEMCLAWZ_URL` | memclawz memory API | `http://localhost:3500` |
-| `SYSTEM_PROMPT` | Custom AI personality | `あなたは...` |
-
----
-
-### 🔍 Web Search (v1.1)
-
-JClaw automatically searches the web when it detects keywords like:
-- 🇯🇵 `最新` `今日` `ニュース` `天気` `株価` `検索` `調べ`
-- 🇨🇳 `最新` `今天` `搜索` `查一下` `多少钱`
-- 🇬🇧 `latest` `today` `news` `weather` `who is` `what is`
-
-You can also force a search with commands:
-```
-/search Tokyo weather today
-/検索 大阪 ラーメン おすすめ
-/搜索 马斯克最新动态
-```
-
-Search results are injected into the LLM prompt, so the AI can answer with up-to-date information. Powered by self-hosted SearXNG. Aggregates Google, Bing, DuckDuckGo & more — free, unlimited, no API key.
-
----
-
-### 🧠 Long-term Memory (v2.0)
-
-JClaw v2.0 integrates [memclawz](https://github.com/yoniassia/memclawz), a Tier S memory system that surpasses OpenClaw's default memory:
-
-- **Persistent memory** — remembers users across sessions (restart-safe)
-- **13 memory types** — fact, decision, preference, relationship, insight, procedure, event, and more
-- **Vector semantic search** — finds relevant memories by meaning, not just keywords (Qdrant)
-- **Knowledge graph** — understands relationships between entities (Neo4j + Graphiti)
-- **Auto-enrichment** — extracts key facts from every conversation via local LLM
-- **AMA-Bench 0.5722** — 2.7x more accurate than Mem0 (0.2104)
-- **100% local** — zero API cost, all processing on your own hardware
-
-To enable memory, deploy memclawz on the same machine as Ollama:
-```bash
-# 1. Install memclawz
-git clone https://github.com/yoniassia/memclawz.git
-cd memclawz && pip install -e .
-
-# 2. Start dependencies (Qdrant + Neo4j)
 docker run -d --name qdrant -p 6333:6333 qdrant/qdrant
 docker run -d --name neo4j -p 7474:7474 -p 7687:7687 -e NEO4J_AUTH=none neo4j:5-community
 
-# 3. Start memclawz API
-python -m uvicorn memclawz.api:app --host 127.0.0.1 --port 3500
+# Pull LLM model & launch
+ollama pull qwen3:14b && npm start
+# 🐾 JClaw v2.1 running — Tier S memory + Owner mode enabled
 ```
 
-JClaw automatically detects memclawz and enables long-term memory. Without it, JClaw still works with in-session memory only.
+## Environment Variables
 
----
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `LINE_CHANNEL_SECRET` | LINE channel secret (required) | — |
+| `LINE_CHANNEL_ACCESS_TOKEN` | LINE access token (required) | — |
+| `OLLAMA_HOST` | Ollama API URL | `http://localhost:11434` |
+| `OLLAMA_MODEL` | LLM model name | `qwen3:14b` |
+| `PORT` | Server port | `3001` |
+| `SEARXNG_URL` | SearXNG search URL | `http://localhost:8899` |
+| `MEMCLAWZ_URL` | memclawz memory API | `http://localhost:3500` |
+| `OWNER_ONLY` | Restrict to owner only | `false` |
+| `OWNER_USER_ID` | Owner's LINE userId | — |
 
-## 🇯🇵 日本語
+## Memory Comparison
 
-### JClawとは？
+| Agent | Persistent | Vector | Graph | Multi-hop | Cost |
+|-------|-----------|--------|-------|-----------|------|
+| **JClaw v2.1** | ✅ | ✅ | ✅ | ✅ | $0 |
+| OpenClaw | ✅ | ✅ | ❌ | ❌ | API fees |
+| Mem0 | ✅ | ✅ | $249/m | $249/m | $19-249/m |
+| ChatGPT | ✅ | ❌ | ❌ | ❌ | $20/m |
+| Dify | ❌ | ❌ | ❌ | ❌ | Plugin |
 
-JClawは、**LINE Messaging API**にネイティブ対応した完全自己ホスト型のオープンソースAIエージェントです。**Ollama**を使ってローカルLLM（例：`qwen3:14b`）をサーバー上で直接実行するため、**APIコスト完全ゼロ**・**外部AIサービス依存なし**・**データ完全ローカル保持**を実現しています。v2.0より**memclawz Tier S記憶システム**（Qdrant + Neo4jナレッジグラフ）を搭載し、ユーザーの名前・好み・過去の会話を長期記憶。OpenClawのデフォルト記憶を超える精度を実現しました。
+## Links
 
-開発・メンテナンス：[iHouse Japan](https://github.com/iHouse-japan)
+- 🌐 [jclaw.1d1s.com](https://jclaw.1d1s.com) — Official website
+- 💬 [chat.1d1s.com](https://chat.1d1s.com) — Web chat (PWA)
+- 🦞 [longxia.1d1s.com](https://longxia.1d1s.com) — 龙虾大全 AI Agent Directory
+- 🤖 [1d1s.com/robo/](https://1d1s.com/robo/) — ROBO COMPARE
 
-### 📄 ライセンス
+## License
 
-MIT © [iHouse Japan](https://github.com/iHouse-japan)
+MIT — Built by [iHouse Japan](https://github.com/iHouse-japan) 🇯🇵 Osaka
+
+Memory powered by [memclawz](https://github.com/yoniassia/memclawz)

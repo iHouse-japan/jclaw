@@ -1,6 +1,6 @@
 {
   "name": "jclaw",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "LINE-native AI Agent powered by local LLM via Ollama",
   "main": "server.js",
   "type": "module",
