@@ -1,5 +1,5 @@
 /**
- * JClaw v2.0 - LINE-native AI Agent powered by local LLM
+ * JClaw v2.2 - LINE-native AI Agent powered by local LLM
  * Japan's first LINE Official SDK + Ollama + SearXNG + memclawz integration
  * Features: Web search, Tier S memory (causality graph, 2.7x better than Mem0)
  * Zero API cost — 100% self-hosted
@@ -29,200 +29,23 @@ const MEMCLAWZ_URL = process.env.MEMCLAWZ_URL || 'http://localhost:3500';
 const OWNER_ONLY = process.env.OWNER_ONLY === 'true';
 let OWNER_USER_ID = process.env.OWNER_USER_ID || '';
 
-// --- Google Workspace Integration (user configures own credentials) ---
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
-const GOOGLE_REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN || '';
-const GOOGLE_ENABLED = !!(GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET && GOOGLE_REFRESH_TOKEN);
-
-let gAuth = null, gmail = null, gcal = null, gtasks = null, gdrive = null;
-if (GOOGLE_ENABLED) {
-  gAuth = new google.auth.OAuth2(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET);
-  gAuth.setCredentials({ refresh_token: GOOGLE_REFRESH_TOKEN });
-  gmail = google.gmail({ version: 'v1', auth: gAuth });
-  gcal = google.calendar({ version: 'v3', auth: gAuth });
-  gtasks = google.tasks({ version: 'v1', auth: gAuth });
-  gdrive = google.drive({ version: 'v3', auth: gAuth });
-  console.log('📧 Google Workspace: ON (Gmail + Calendar + Tasks + Drive)');
+// --- Google Workspace (user configures own credentials via .env) ---
+const GWS_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
+const GWS_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
+const GWS_REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN || '';
+const GWS_ENABLED = !!(GWS_CLIENT_ID && GWS_CLIENT_SECRET && GWS_REFRESH_TOKEN);
+let gAuth=null, gmail=null, gcal=null, gtasks=null, gdrive=null;
+if (GWS_ENABLED) {
+  gAuth = new google.auth.OAuth2(GWS_CLIENT_ID, GWS_CLIENT_SECRET);
+  gAuth.setCredentials({ refresh_token: GWS_REFRESH_TOKEN });
+  gmail = google.gmail({ version:'v1', auth:gAuth });
+  gcal = google.calendar({ version:'v3', auth:gAuth });
+  gtasks = google.tasks({ version:'v1', auth:gAuth });
+  gdrive = google.drive({ version:'v3', auth:gAuth });
+  console.log('📧 Google Workspace: ON (Gmail+Calendar+Tasks+Drive)');
 } else {
-  console.log('📧 Google Workspace: OFF (set GOOGLE_CLIENT_ID/SECRET/REFRESH_TOKEN)');
+  console.log('📧 Google Workspace: OFF (set GOOGLE_CLIENT_ID/SECRET/REFRESH_TOKEN in .env)');
 }
-
-// Google Workspace API functions
-async function gMailList(q = 'is:inbox', max = 5) {
-  if (!gmail) return 'Gmail未設定。GOOGLE_CLIENT_ID/SECRET/REFRESH_TOKENを.envに設定してください。';
-  try {
-    const res = await gmail.users.messages.list({ userId: 'me', q, maxResults: max });
-    const msgs = res.data.messages || [];
-    if (!msgs.length) return '該当メールなし。';
-    const details = [];
-    for (const m of msgs.slice(0, max)) {
-      const msg = await gmail.users.messages.get({ userId: 'me', id: m.id, format: 'metadata', metadataHeaders: ['From', 'Subject', 'Date'] });
-      const headers = msg.data.payload?.headers || [];
-      const from = headers.find(h => h.name === 'From')?.value || '';
-      const subject = headers.find(h => h.name === 'Subject')?.value || '';
-      const date = headers.find(h => h.name === 'Date')?.value || '';
-      details.push(date + ' | ' + from + '\n  ' + subject);
-    }
-    return details.join('\n\n');
-  } catch (e) { return 'Gmail error: ' + e.message; }
-}
-
-async function gMailRead(messageId) {
-  if (!gmail) return 'Gmail未設定。';
-  try {
-    const msg = await gmail.users.messages.get({ userId: 'me', id: messageId, format: 'full' });
-    const headers = msg.data.payload?.headers || [];
-    const from = headers.find(h => h.name === 'From')?.value || '';
-    const subject = headers.find(h => h.name === 'Subject')?.value || '';
-    const body = msg.data.snippet || '';
-    return 'From: ' + from + '\nSubject: ' + subject + '\n\n' + body;
-  } catch (e) { return 'Gmail error: ' + e.message; }
-}
-
-async function gMailSend(to, subject, body) {
-  if (!gmail) return 'Gmail未設定。';
-  try {
-    const raw = Buffer.from('To: ' + to + '\nSubject: ' + subject + '\nContent-Type: text/plain; charset=utf-8\n\n' + body).toString('base64url');
-    await gmail.users.messages.send({ userId: 'me', requestBody: { raw } });
-    return '✅ メール送信完了: ' + to;
-  } catch (e) { return 'Gmail send error: ' + e.message; }
-}
-
-async function gCalList(days = 7) {
-  if (!gcal) return 'Calendar未設定。';
-  try {
-    const now = new Date();
-    const end = new Date(now.getTime() + days * 86400000);
-    const res = await gcal.events.list({ calendarId: 'primary', timeMin: now.toISOString(), timeMax: end.toISOString(), singleEvents: true, orderBy: 'startTime', maxResults: 10 });
-    const events = res.data.items || [];
-    if (!events.length) return '今後' + days + '日間の予定なし。';
-    return events.map(e => {
-      const start = e.start?.dateTime || e.start?.date || '';
-      return start + ' | ' + (e.summary || '(無題)') + (e.location ? ' @ ' + e.location : '');
-    }).join('\n');
-  } catch (e) { return 'Calendar error: ' + e.message; }
-}
-
-async function gCalCreate(summary, startTime, endTime, description) {
-  if (!gcal) return 'Calendar未設定。';
-  try {
-    const event = { summary, start: { dateTime: startTime, timeZone: 'Asia/Tokyo' }, end: { dateTime: endTime, timeZone: 'Asia/Tokyo' } };
-    if (description) event.description = description;
-    const res = await gcal.events.insert({ calendarId: 'primary', requestBody: event });
-    return '✅ 予定作成: ' + summary + ' (' + startTime + ')\n' + res.data.htmlLink;
-  } catch (e) { return 'Calendar error: ' + e.message; }
-}
-
-async function gTasksList() {
-  if (!gtasks) return 'Tasks未設定。';
-  try {
-    const lists = await gtasks.tasklists.list({ maxResults: 10 });
-    const tl = lists.data.items?.[0];
-    if (!tl) return 'タスクリストなし。';
-    const res = await gtasks.tasks.list({ tasklist: tl.id, maxResults: 20, showCompleted: false });
-    const tasks = res.data.items || [];
-    if (!tasks.length) return '未完了タスクなし。';
-    return tasks.map((t, i) => (i+1) + '. ' + (t.title || '(無題)') + (t.due ? ' (期限: ' + t.due.split('T')[0] + ')' : '')).join('\n');
-  } catch (e) { return 'Tasks error: ' + e.message; }
-}
-
-async function gTasksAdd(title, dueDate) {
-  if (!gtasks) return 'Tasks未設定。';
-  try {
-    const lists = await gtasks.tasklists.list({ maxResults: 1 });
-    const tl = lists.data.items?.[0];
-    if (!tl) return 'タスクリストなし。';
-    const task = { title };
-    if (dueDate) task.due = dueDate + 'T00:00:00.000Z';
-    await gtasks.tasks.insert({ tasklist: tl.id, requestBody: task });
-    return '✅ タスク追加: ' + title + (dueDate ? ' (期限: ' + dueDate + ')' : '');
-  } catch (e) { return 'Tasks error: ' + e.message; }
-}
-
-async function gDriveList(q = '', max = 10) {
-  if (!gdrive) return 'Drive未設定。';
-  try {
-    const params = { pageSize: max, fields: 'files(id,name,mimeType,modifiedTime,webViewLink)', orderBy: 'modifiedTime desc' };
-    if (q) params.q = "name contains '" + q.replace(/'/g, "\\'") + "'";
-    const res = await gdrive.files.list(params);
-    const files = res.data.files || [];
-    if (!files.length) return '該当ファイルなし。';
-    return files.map(f => f.name + ' (' + f.mimeType?.split('.').pop() + ') ' + f.modifiedTime?.split('T')[0] + '\n  ' + (f.webViewLink || '')).join('\n\n');
-  } catch (e) { return 'Drive error: ' + e.message; }
-}
-
-// Google Workspace tool keywords detection
-const GWS_PATTERNS = {
-  mail_list: /メール|受信|inbox|mail|邮件|收件/i,
-  mail_send: /メール送|send.*mail|发邮件|写信/i,
-  cal_list: /予定|スケジュール|calendar|日程|日历|行程/i,
-  cal_create: /予定.*作成|予定.*追加|schedule.*create|安排|添加日程/i,
-  tasks_list: /タスク|todo|やること|任务|待办/i,
-  tasks_add: /タスク.*追加|todo.*add|添加任务/i,
-  drive_list: /ドライブ|drive|ファイル|文件/i,
-};
-
-async function handleGoogleTool(text) {
-  if (!GOOGLE_ENABLED) return null;
-  const t = text.toLowerCase();
-  
-  if (GWS_PATTERNS.mail_send.test(t)) {
-    return '[Google Workspace機能] メール送信はLLMに内容を生成させてから実行します。現在対応準備中。';
-  }
-  if (GWS_PATTERNS.mail_list.test(t)) return await gMailList('is:inbox is:unread', 5);
-  if (GWS_PATTERNS.cal_create.test(t)) {
-    return '[Google Workspace機能] 予定作成はLLMに日時を解析させてから実行します。具体的な日時を指定してください。';
-  }
-  if (GWS_PATTERNS.cal_list.test(t)) return await gCalList(7);
-  if (GWS_PATTERNS.tasks_add.test(t)) {
-    return '[Google Workspace機能] タスク追加の内容を指定してください。';
-  }
-  if (GWS_PATTERNS.tasks_list.test(t)) return await gTasksList();
-  if (GWS_PATTERNS.drive_list.test(t)) return await gDriveList('', 10);
-  return null;
-}
-
-const SYSTEM_PROMPT = `あなたはJClaw v2.0です。iHouse Japan（大阪）が開発したLINEネイティブAIアシスタントです。
-
-【あなたの本当の特徴 — 嘘をつかないこと】
-- 🧠 Tier S記憶システム搭載（memclawz v9.1: Qdrant vector search + Neo4j知識グラフ）
-- ユーザーの名前・好み・過去の会話を記憶し、関係性まで理解する
-- 記憶精度はMem0の2.7倍（AMA-Bench学術論文による評価）
-- 🔍 SearXNG自前検索エンジン（Google/Bing/DuckDuckGoを統合、無料・無制限）
-- 「最新」「天気」「ニュース」等のキーワードで自動検索
-- 🌐 日本語・英語・中文を自動検出して対応
-- 💰 完全ローカルLLM（Ollama qwen3:14b）、APIコストゼロ
-- データは全てiHouse Japanの自社サーバー内、外部に出ない
-- 🔒 現在Owner Onlyモード（オーナー専用）
-
-【重要なルール】
-- 存在しない機能を絶対に作り話しないこと
-- メール連携・カレンダー連携・TodoList機能はまだ未実装
-- コード生成能力は一般的なLLMとして可能だが、特別な機能ではない
-- 「2023年」など古い情報を言わない。今は2026年3月
-- 官網URLを勝手に作らない。正しいリンクは以下のみ：
-
-【正しいリンク】
-- JClaw公式: https://jclaw.1d1s.com
-- JClaw Chat: https://chat.1d1s.com
-- GitHub: https://github.com/iHouse-japan/jclaw
-- 龍蝦大全(AI Agent Directory): https://longxia.1d1s.com
-- ROBO COMPARE: https://1d1s.com/robo/
-- iHouse Japan: https://ihousejapan.com
-
-【Google Workspace連携】(GOOGLE_CLIENT_ID/SECRET/REFRESH_TOKEN設定時に有効)
-- 📧 Gmail: メール一覧・検索・送信
-- 📅 Calendar: 予定一覧・作成・更新
-- ✅ Tasks: タスク一覧・追加・完了
-- 📁 Drive: ファイル検索・一覧
-ユーザーが「メール見せて」「今週の予定は」「タスク追加」等と言ったら自動実行。
-
-回答は簡潔で実用的に。Web検索結果がある場合はその情報を元に正確に回答しURLも含める。`;
-
-const client = new messagingApi.MessagingApiClient({
-  channelAccessToken: config.channelAccessToken,
-});
 
 // --- Web Search ---
 const SEARCH_KW_JA = ['最新','今日','ニュース','天気','株価','検索','調べ','現在','今年','2025','2026','いくら','何時','速報','誰','どこ'];
@@ -314,6 +137,52 @@ function addToHistory(userId, role, content) {
   while (history.length > MAX_HISTORY) history.shift();
 }
 
+// --- Google Workspace Functions ---
+async function gwsGmailList(n=5) {
+  if (!gmail) return null;
+  try {
+    const r = await gmail.users.messages.list({userId:'me',maxResults:n,q:'in:inbox'});
+    const out = [];
+    for (const m of (r.data.messages||[]).slice(0,n)) {
+      const d = await gmail.users.messages.get({userId:'me',id:m.id,format:'metadata',metadataHeaders:['From','Subject','Date']});
+      const h = {}; (d.data.payload?.headers||[]).forEach(x=>h[x.name]=x.value);
+      out.push('['+h.Date?.substring(0,16)+'] From:'+h.From?.substring(0,40)+' | '+h.Subject);
+    }
+    return out.join('\n');
+  } catch(e) { console.error('[Gmail]',e.message); return 'Gmail error: '+e.message; }
+}
+
+async function gwsCalList(days=7) {
+  if (!gcal) return null;
+  try {
+    const now = new Date(); const end = new Date(now.getTime()+days*86400000);
+    const r = await gcal.events.list({calendarId:'primary',timeMin:now.toISOString(),timeMax:end.toISOString(),singleEvents:true,orderBy:'startTime',maxResults:10});
+    return (r.data.items||[]).map(e=>{
+      const t = e.start?.dateTime ? new Date(e.start.dateTime).toLocaleString('ja-JP') : e.start?.date;
+      return '['+t+'] '+e.summary+(e.location?' @'+e.location:'');
+    }).join('\n') || 'No upcoming events';
+  } catch(e) { console.error('[Calendar]',e.message); return 'Calendar error: '+e.message; }
+}
+
+async function gwsTaskList() {
+  if (!gtasks) return null;
+  try {
+    const lists = await gtasks.tasklists.list({maxResults:1});
+    const lid = lists.data.items?.[0]?.id;
+    if (!lid) return 'No task lists';
+    const r = await gtasks.tasks.list({tasklist:lid,maxResults:10,showCompleted:false});
+    return (r.data.items||[]).map((t,i)=>(i+1)+'. '+(t.title||'(untitled)')+(t.due?' (due:'+t.due.substring(0,10)+')':'')).join('\n') || 'No tasks';
+  } catch(e) { console.error('[Tasks]',e.message); return 'Tasks error: '+e.message; }
+}
+
+async function gwsDriveSearch(q) {
+  if (!gdrive) return null;
+  try {
+    const r = await gdrive.files.list({q:"name contains '"+q.replace(/'/g,'')+"'",pageSize:5,fields:'files(id,name,mimeType,modifiedTime,webViewLink)'});
+    return (r.data.files||[]).map(f=>f.name+' ('+f.mimeType?.split('.').pop()+') '+f.webViewLink).join('\n') || 'No files found';
+  } catch(e) { console.error('[Drive]',e.message); return 'Drive error: '+e.message; }
+}
+
 // --- Ollama Chat (with Web Search injection) ---
 async function chatWithOllama(userId, userMessage) {
   addToHistory(userId, 'user', userMessage);
@@ -324,6 +193,32 @@ async function chatWithOllama(userId, userMessage) {
   const memories = await memorySearch(userMessage, userId);
   if (memories) {
     systemContent += '\n\n[Long-term Memory — things you remember about this user]\n' + memories + '\n\nUse this memory naturally in your response. Do not say "according to my memory" — just use the information as if you know it.';
+  }
+
+  // Google Workspace context injection
+  if (GWS_ENABLED) {
+    const t = userMessage.toLowerCase();
+    const mailKW = ['メール','mail','邮件','inbox','受信','email','gmail'];
+    const calKW = ['カレンダー','calendar','日程','予定','日历','schedule','スケジュール'];
+    const taskKW = ['タスク','task','todo','やること','任务','待办'];
+    const driveKW = ['ドライブ','drive','ファイル','file','文件','ドキュメント','document'];
+    
+    if (mailKW.some(k=>t.includes(k))) {
+      const mails = await gwsGmailList(5);
+      if (mails) systemContent += '\n\n[Gmail Inbox (latest 5)]\n' + mails + '\nAnswer about these emails naturally.';
+    }
+    if (calKW.some(k=>t.includes(k))) {
+      const cal = await gwsCalList(7);
+      if (cal) systemContent += '\n\n[Google Calendar (next 7 days)]\n' + cal + '\nAnswer about schedule naturally.';
+    }
+    if (taskKW.some(k=>t.includes(k))) {
+      const tasks = await gwsTaskList();
+      if (tasks) systemContent += '\n\n[Google Tasks]\n' + tasks;
+    }
+    if (driveKW.some(k=>t.includes(k))) {
+      const q = t.replace(/ドライブ|drive|ファイル|file|文件|ドキュメント|document|検索|search|搜索/gi,'').trim();
+      if (q) { const files = await gwsDriveSearch(q); if (files) systemContent += '\n\n[Google Drive Search: '+q+']\n' + files; }
+    }
   }
 
     // Google Workspace auto-detect
@@ -435,7 +330,7 @@ async function handleEvent(event) {
   // /status command
   if (userText === '/status') {
     const history = getHistory(userId);
-    const statusText = '📊 JClaw v2.0 Status\n\n'
+    const statusText = '📊 JClaw v2.2 Status\n\n'
       + '🦙 Model: ' + OLLAMA_MODEL + '\n'
       + '🧠 Memory: Tier S (memclawz v9.1)\n'
       + '   Qdrant + Neo4j Knowledge Graph\n'
@@ -458,7 +353,7 @@ async function handleEvent(event) {
   if (userText === '/help' || userText === '/ヘルプ') {
     return client.replyMessage({
       replyToken: event.replyToken,
-      messages: [{ type: 'text', text: '🐾 JClaw v2.0 — AI Assistant\n'
+      messages: [{ type: 'text', text: '🐾 JClaw v2.2 — AI Assistant\n'
         + 'by iHouse Japan 🇯🇵\n\n'
         + '━━━ 🧠 Tier S 記憶 ━━━\n'
         + 'あなたの名前・好み・過去の会話を記憶。\n'
@@ -532,7 +427,7 @@ app.use((req, res) => {
 
 app.listen(PORT, () => {
   console.log('='.repeat(50));
-  console.log('🐾 JClaw v2.0 is running on port ' + PORT);
+  console.log('🐾 JClaw v2.2 is running on port ' + PORT);
   console.log('🦙 Ollama: ' + OLLAMA_HOST + ' (' + OLLAMA_MODEL + ')');
   console.log('🔍 Web Search: SearXNG (self-hosted, free, unlimited)');
   console.log('🧠 Memory: memclawz v9.1 (Qdrant + Neo4j, zero API cost)');
