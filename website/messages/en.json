@@ -1,0 +1,35 @@
+{
+  "nav": {
+    "overview": "Home",
+    "selfHosted": "Self-Hosted",
+    "cloud": "Cloud Roadmap",
+    "security": "Security",
+    "contact": "Contact",
+    "github": "GitHub",
+    "menuOpen": "Open menu",
+    "menuClose": "Close menu"
+  },
+  "language": {
+    "label": "Language",
+    "ja": "JP",
+    "en": "EN",
+    "zh-cn": "简中"
+  },
+  "cta": {
+    "requestDemo": "Request consultation",
+    "viewOss": "View OSS",
+    "contactTeam": "Contact team",
+    "joinWaitlist": "Discuss cloud plans",
+    "reviewSecurity": "Review security",
+    "seeDeployment": "See deployment"
+  },
+  "common": {
+    "brandTagline": "Japan-first AI Agent",
+    "cloudPlanned": "Official cloud roadmap",
+    "openSource": "Open Source",
+    "footerNote": "This site reflects the product scope we can describe today. Future cloud capabilities remain clearly marked as planned."
+  },
+  "section": {
+    "launch": "Get Started"
+  }
+}

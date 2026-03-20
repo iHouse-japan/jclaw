@@ -1,0 +1,35 @@
+{
+  "nav": {
+    "overview": "首页",
+    "selfHosted": "私有部署",
+    "cloud": "云路线图",
+    "security": "安全说明",
+    "contact": "咨询",
+    "github": "GitHub",
+    "menuOpen": "打开菜单",
+    "menuClose": "关闭菜单"
+  },
+  "language": {
+    "label": "语言切换",
+    "ja": "JP",
+    "en": "EN",
+    "zh-cn": "简中"
+  },
+  "cta": {
+    "requestDemo": "导入咨询",
+    "viewOss": "查看 OSS",
+    "contactTeam": "联系团队",
+    "joinWaitlist": "咨询云路线",
+    "reviewSecurity": "查看安全说明",
+    "seeDeployment": "查看部署方式"
+  },
+  "common": {
+    "brandTagline": "Japan-first AI Agent",
+    "cloudPlanned": "官方云路线图",
+    "openSource": "开源版",
+    "footerNote": "当前官网仅介绍现阶段可以正式说明的产品范围，未来云能力会继续明确标注为规划。"
+  },
+  "section": {
+    "launch": "导入咨询"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "nav": {
+    "overview": "ホーム",
+    "selfHosted": "セルフホスト",
+    "cloud": "クラウド計画",
+    "security": "安全性",
+    "contact": "相談",
+    "github": "GitHub",
+    "menuOpen": "メニューを開く",
+    "menuClose": "メニューを閉じる"
+  },
+  "language": {
+    "label": "言語切替",
+    "ja": "JP",
+    "en": "EN",
+    "zh-cn": "简中"
+  },
+  "cta": {
+    "requestDemo": "導入相談",
+    "viewOss": "OSS を見る",
+    "contactTeam": "相談する",
+    "joinWaitlist": "クラウド相談をする",
+    "reviewSecurity": "安全性を見る",
+    "seeDeployment": "導入方法を見る"
+  },
+  "common": {
+    "brandTagline": "Japan-first AI Agent",
+    "cloudPlanned": "公式クラウド計画",
+    "openSource": "公開版",
+    "footerNote": "現在案内している内容は、現時点で説明できる提供範囲に基づいています。将来提供予定の内容は計画として区別して記載します。"
+  },
+  "section": {
+    "launch": "導入相談"
+  }
+}
