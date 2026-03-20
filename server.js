@@ -421,6 +421,7 @@ async function handleEvent(event) {
 
 // --- Express App ---
 const app = express();
+app.set("trust proxy", 1);
 
 app.get('/health', (req, res) => {
   res.json({
@@ -432,7 +433,7 @@ app.get('/health', (req, res) => {
 });
 
 // Rate Limit: max 30 webhook calls per minute per IP
-const webhookLimiter = rateLimit({ windowMs: 60000, max: 30 });
+const webhookLimiter = rateLimit({ windowMs: 60000, max: 30, validate: {xForwardedForHeader: false} });
 app.use("/webhook", webhookLimiter);
 app.post('/webhook', middleware(config), async (req, res) => {
   try {
