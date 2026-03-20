@@ -1,6 +1,6 @@
 {
   "name": "jclaw",
-  "version": "2.2.0",
+  "version": "2.5.0",
   "description": "LINE-native AI Agent powered by local LLM via Ollama",
   "main": "server.js",
   "type": "module",
@@ -13,8 +13,10 @@
   "dependencies": {
     "@line/bot-sdk": "^9.7.0",
     "dotenv": "^16.4.7",
+    "duck-duck-scrape": "^2.2.7",
     "express": "^4.21.2",
-    "duck-duck-scrape": "^2.2.5",
+    "express-rate-limit": "^8.3.1",
+    "googleapis": "^171.4.0",
     "node-fetch": "^3.3.2"
   }
 }

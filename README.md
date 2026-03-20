@@ -1,108 +1,174 @@
-# 🐾 JClaw v2.2 — LINE AI Agent with Google Workspace
+# 🐾 JClaw v2.5
 
-<div align="center">
+**LINE-native AI Agent powered by local LLM**
 
-**Japan's first LINE-native AI Agent with Tier S memory + Google Workspace.**
+Your own AI assistant running entirely on your hardware. Connects to LINE, searches the web, reads your Gmail, and remembers your conversations — all without sending data to any cloud AI service.
 
-🧠 Knowledge Graph | 🔍 Web Search | 📧 Gmail+Calendar+Tasks+Drive | 💰 Zero API Cost
+## What it does
 
-[Website](https://jclaw.1d1s.com) · [Web Chat](https://chat.1d1s.com) · [龙虾大全](https://longxia.1d1s.com) · [ROBO COMPARE](https://1d1s.com/robo/)
+- 💬 Chat via LINE with a local LLM (Ollama)
+- 🔍 Web search via self-hosted SearXNG (free, unlimited)
+- 🧠 Long-term memory via memclawz (Qdrant + Neo4j)
+- 📧 Gmail / Calendar / Drive / Tasks integration
+- 🌐 Browser access via Playwright
+- 🫁 Proactive notifications (weather alerts, train delays)
+- 🛡️ Owner-only mode, rate limiting, webhook signature verification
 
-**LINE Target Markets: 🇯🇵 Japan · 🇹🇭 Thailand · 🇹🇼 Taiwan · 🇮🇩 Indonesia**
+## Quick start (minimum viable deployment)
 
-</div>
+**You need:** Node.js 20+, Ollama, a LINE developer account.
 
-## What's New in v2.2
+```bash
+# 1. Clone
+git clone https://github.com/iHouse-japan/jclaw.git
+cd jclaw
 
-- 📧 **Google Workspace Integration** — Gmail, Calendar, Tasks, Drive via googleapis
-  - Auto-detect keywords: "メール" "calendar" "タスク" "ドライブ" triggers API
-  - User configures own Google OAuth credentials in `.env`
-- 🔒 **Owner-Only Mode** — `/setowner` locks bot to your LINE account
-- 🌐 **Web Chat PWA** — `chat.1d1s.com`, no LINE message limits
-- 👤 **Per-user Memory Isolation** — Each user's memories are separate
+# 2. Install
+npm install
+mkdir -p logs
 
-## Features
+# 3. Configure
+cp .env.example .env
+# Edit .env — fill in LINE_CHANNEL_SECRET and LINE_CHANNEL_ACCESS_TOKEN
 
-| Category | Feature | Details |
-|----------|---------|---------|
-| 🧠 Memory | Tier S (memclawz v9.1) | Qdrant vector + Neo4j graph, 2.7x Mem0 |
-| 🔍 Search | SearXNG | Google/Bing/DuckDuckGo, free & unlimited |
-| 📧 Google | Gmail | Read inbox, search, auto-detect "メール" |
-| 📅 Google | Calendar | List events, auto-detect "予定" |
-| ✅ Google | Tasks | List todos, auto-detect "タスク" |
-| 📁 Google | Drive | Search files, auto-detect "ドライブ" |
-| 🦙 LLM | Ollama | qwen3:14b or any model, zero API cost |
-| 🌏 Language | Trilingual | JP/EN/ZH auto-detection |
-| 🔒 Security | Owner Mode | Lock bot to single LINE user |
-| 👤 Privacy | Per-user Memory | Isolated memory per LINE userId |
+# 4. Pull a model
+ollama pull qwen3:14b
+# Minimum RAM: 16GB for 14b, 8GB for 7b models
+# If your machine has less RAM: ollama pull qwen3:8b
+# Then set OLLAMA_MODEL=qwen3:8b in .env
+
+# 5. Start
+node server.js
+# Or with PM2:
+pm2 start ecosystem.config.cjs
+```
+
+**At this point JClaw is running locally.** To connect it to LINE, you need a public HTTPS URL for the webhook (see LINE setup below).
+
+## LINE setup
+
+1. Go to [LINE Developers Console](https://developers.line.biz/console/)
+2. Create a new **Messaging API channel**
+3. Copy **Channel Secret** → paste into `.env` as `LINE_CHANNEL_SECRET`
+4. Issue a **Channel Access Token** → paste into `.env` as `LINE_CHANNEL_ACCESS_TOKEN`
+5. Set **Webhook URL** to your public HTTPS endpoint:
+   - If you have a server with domain: `https://yourdomain.com/webhook`
+   - For local testing: use [ngrok](https://ngrok.com/) → `ngrok http 3001` → copy the HTTPS URL
+6. Enable **Use webhook** in the LINE console
+7. Disable **Auto-reply messages** in the LINE Official Account settings
+
+## Environment variables
+
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `LINE_CHANNEL_SECRET` | **Yes** | — | LINE Messaging API channel secret |
+| `LINE_CHANNEL_ACCESS_TOKEN` | **Yes** | — | LINE Messaging API access token |
+| `OLLAMA_HOST` | No | `http://localhost:11434` | Ollama API endpoint |
+| `OLLAMA_MODEL` | No | `qwen3:14b` | Model to use (any Ollama model) |
+| `PORT` | No | `3001` | HTTP server port |
+| `SEARXNG_URL` | No | — | SearXNG endpoint (enables web search) |
+| `MEMCLAWZ_URL` | No | — | memclawz endpoint (enables memory) |
+| `OWNER_ONLY` | No | `false` | Restrict to single user |
+| `OWNER_USER_ID` | No | — | LINE userId of the owner |
+| `GOOGLE_CLIENT_ID` | No | — | Google OAuth client ID |
+| `GOOGLE_CLIENT_SECRET` | No | — | Google OAuth client secret |
+| `GOOGLE_REFRESH_TOKEN` | No | — | Google OAuth refresh token |
+| `SYSTEM_PROMPT` | No | (built-in) | Custom system prompt |
+
+## Dependency levels
+
+```
+┌─────────────────────────────────────────────────┐
+│ REQUIRED (JClaw won't start without these)      │
+│  • Node.js 20+                                  │
+│  • LINE Channel Secret + Access Token           │
+│  • Ollama with a pulled model                   │
+├─────────────────────────────────────────────────┤
+│ RECOMMENDED (JClaw works without, but limited)  │
+│  • SearXNG — enables web search                 │
+│  • Public HTTPS URL — needed for LINE webhook   │
+├─────────────────────────────────────────────────┤
+│ OPTIONAL (extra capabilities)                   │
+│  • memclawz — long-term memory                  │
+│  • Google OAuth — Gmail/Calendar/Drive/Tasks    │
+│  • Playwright — browser access                  │
+│  • Docker — for SearXNG, Qdrant, Neo4j          │
+└─────────────────────────────────────────────────┘
+```
+
+## Advanced features
+
+### Web search (SearXNG)
+
+```bash
+docker run -d --name searxng -p 8899:8080 searxng/searxng
+# Add to .env: SEARXNG_URL=http://localhost:8899
+```
+
+### Memory system (memclawz)
+
+Requires Qdrant + Neo4j. See [memclawz documentation](https://github.com/yoniassia/memclawz).
+
+```bash
+# Add to .env: MEMCLAWZ_URL=http://localhost:3500
+```
+
+### Google Workspace
+
+1. Create an OAuth client at [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+2. Enable Gmail, Calendar, Tasks, Drive APIs
+3. Get a refresh token via the OAuth flow
+4. Add credentials to `.env`
+
+### Owner mode
+
+Restrict the bot so only you can use it:
+
+```bash
+# In .env:
+OWNER_ONLY=true
+# Then send /setowner in LINE to register your userId
+```
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| `Missing required environment variables` at startup | `.env` not configured | `cp .env.example .env` and fill in LINE credentials |
+| `Ollama not reachable` warning | Ollama not running | `ollama serve` or check OLLAMA_HOST in .env |
+| `Model "xxx" not found` warning | Model not pulled | `ollama pull qwen3:14b` (or your chosen model) |
+| LINE messages not received | Webhook URL wrong or not HTTPS | Check LINE console webhook settings, use ngrok for local dev |
+| `EACCES` on PM2 logs | Log directory needs permission | Default logs go to `./logs/` — run `mkdir -p logs` |
+| Google features not working | Missing OAuth credentials | Set GOOGLE_CLIENT_ID/SECRET/REFRESH_TOKEN in .env |
+| Search not working | SearXNG not running | Start SearXNG container or remove SEARXNG_URL from .env |
+| Memory not working | memclawz not running | Start memclawz or remove MEMCLAWZ_URL from .env |
+
+## Hardware requirements
+
+| Setup | RAM | Storage | GPU |
+|-------|-----|---------|-----|
+| Minimum (7-8B model) | 8GB | 10GB | Not required |
+| Recommended (14B model) | 16GB | 20GB | Not required |
+| Full (72B model) | 64GB+ | 50GB | Recommended |
+
+Ollama uses CPU by default. GPU acceleration is automatic if detected (NVIDIA CUDA, Apple Metal).
 
 ## Architecture
 
 ```
-LINE/Web User → VPS (Node.js)
-                 ├── SSH Tunnel → Ollama (LLM)
-                 ├── SSH Tunnel → SearXNG (search)
-                 ├── SSH Tunnel → memclawz (memory)
-                 │                 ├── Qdrant (vector)
-                 │                 └── Neo4j (graph)
-                 └── googleapis → Gmail/Calendar/Tasks/Drive
+LINE App → LINE Platform → Webhook → JClaw (Node.js)
+                                        ├── Ollama (local LLM)
+                                        ├── SearXNG (web search)
+                                        ├── memclawz (memory)
+                                        └── Google APIs (Gmail, Calendar, Drive, Tasks)
 ```
-
-## Commands
-
-| Command | Description |
-|---------|-------------|
-| `/search <query>` | Web search (EN) |
-| `/検索 <keyword>` | Web search (JA) |
-| `/搜索 <keyword>` | Web search (ZH) |
-| `/reset` | Reset conversation |
-| `/status` | System status + links |
-| `/help` | Show help |
-| `/whoami` | Show LINE userId |
-| `/setowner` | Set yourself as owner |
-
-## Quick Start
-
-```bash
-git clone https://github.com/iHouse-japan/jclaw.git
-cd jclaw && npm install && cp .env.example .env
-# Edit .env with LINE credentials + optional Google OAuth
-ollama pull qwen3:14b && npm start
-```
-
-## Environment Variables
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `LINE_CHANNEL_SECRET` | ✅ | LINE Messaging API |
-| `LINE_CHANNEL_ACCESS_TOKEN` | ✅ | LINE Messaging API |
-| `OLLAMA_HOST` | | Default: `http://localhost:11434` |
-| `OLLAMA_MODEL` | | Default: `qwen3:14b` |
-| `SEARXNG_URL` | | Default: `http://localhost:8899` |
-| `MEMCLAWZ_URL` | | Default: `http://localhost:3500` |
-| `OWNER_ONLY` | | `true` to restrict access |
-| `OWNER_USER_ID` | | Owner's LINE userId |
-| `GOOGLE_CLIENT_ID` | | Google OAuth client ID |
-| `GOOGLE_CLIENT_SECRET` | | Google OAuth client secret |
-| `GOOGLE_REFRESH_TOKEN` | | Google OAuth refresh token |
-
-## Comparison
-
-| Agent | Memory | Search | Google WS | Graph | Cost |
-|-------|--------|--------|-----------|-------|------|
-| **JClaw v2.2** | ✅ Tier S | ✅ SearXNG | ✅ Full | ✅ Neo4j | $0 |
-| OpenClaw | ✅ | Plugin | Plugin | ❌ | API fees |
-| Mem0 | ✅ | ❌ | ❌ | $249/m | $19-249/m |
-| ChatGPT | ✅ | ✅ | Plugin | ❌ | $20/m |
-| Dify | ❌ | Plugin | Plugin | ❌ | Plugin |
-
-## Links
-
-- 🌐 [jclaw.1d1s.com](https://jclaw.1d1s.com) — Official website
-- 💬 [chat.1d1s.com](https://chat.1d1s.com) — Web chat (PWA)
-- 🦞 [longxia.1d1s.com](https://longxia.1d1s.com) — 龙虾大全
-- 🤖 [1d1s.com/robo/](https://1d1s.com/robo/) — ROBO COMPARE
 
 ## License
 
-MIT — Built by [iHouse Japan](https://github.com/iHouse-japan) 🇯🇵 Osaka
+MIT — © iHouse Japan 2026
+
+## Links
+
+- Web chat: [chat.1d1s.com](https://chat.1d1s.com)
+- Product page: [jclaw.1d1s.com](https://jclaw.1d1s.com)
+- GitHub: [github.com/iHouse-japan/jclaw](https://github.com/iHouse-japan/jclaw)

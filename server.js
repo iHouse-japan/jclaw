@@ -1,5 +1,5 @@
 /**
- * JClaw v2.2 - LINE-native AI Agent powered by local LLM
+ * JClaw v2.5 - LINE-native AI Agent powered by local LLM
  * Japan's first LINE Official SDK + Ollama + SearXNG + memclawz integration
  * Features: Web search, Tier S memory (causality graph, 2.7x better than Mem0)
  * Zero API cost — 100% self-hosted
@@ -12,8 +12,35 @@ import { messagingApi, middleware, HTTPFetchError } from '@line/bot-sdk';
 import fetch from 'node-fetch';
 import { google } from 'googleapis';
 import dotenv from 'dotenv';
+import rateLimit from 'express-rate-limit';
 
 dotenv.config();
+
+// === Preflight Check ===
+const missing = [];
+if (!process.env.LINE_CHANNEL_SECRET) missing.push("LINE_CHANNEL_SECRET");
+if (!process.env.LINE_CHANNEL_ACCESS_TOKEN) missing.push("LINE_CHANNEL_ACCESS_TOKEN");
+if (missing.length) {
+  console.error("\n\x1b[31m=== JClaw Startup Failed ===");
+  console.error("Missing required environment variables:");
+  missing.forEach(v => console.error("  ✗ " + v));
+  console.error("\nCreate .env file from .env.example:\n  cp .env.example .env");
+  console.error("Then fill in LINE credentials from:\n  https://developers.line.biz/console/\x1b[0m\n");
+  process.exit(1);
+}
+// Optional: check Ollama reachability
+const ollamaHost = process.env.OLLAMA_HOST || "http://localhost:11434";
+fetch(ollamaHost + "/api/tags", { signal: AbortSignal.timeout(3000) })
+  .then(r => r.ok ? r.json() : Promise.reject("HTTP " + r.status))
+  .then(d => {
+    const models = (d.models || []).map(m => m.name);
+    const target = process.env.OLLAMA_MODEL || "qwen3:14b";
+    if (!models.some(m => m.startsWith(target.split(":")[0]))) {
+      console.warn("\x1b[33m⚠ Model \"" + target + "\" not found. Available: " + (models.join(", ") || "none") + "\x1b[0m");
+      console.warn("  Run: ollama pull " + target);
+    }
+  })
+  .catch(() => console.warn("\x1b[33m⚠ Ollama not reachable at " + ollamaHost + ". LLM will not work.\x1b[0m"));
 
 // --- Config ---
 const config = {
@@ -21,11 +48,16 @@ const config = {
   channelAccessToken: process.env.LINE_CHANNEL_ACCESS_TOKEN,
 };
 
+const client = new messagingApi.MessagingApiClient({
+  channelAccessToken: config.channelAccessToken,
+});
+
 const OLLAMA_HOST = process.env.OLLAMA_HOST || 'http://localhost:11434';
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'qwen3:14b';
 const PORT = process.env.PORT || 3001;
 const SEARXNG_URL = process.env.SEARXNG_URL || 'http://localhost:8899';
 const MEMCLAWZ_URL = process.env.MEMCLAWZ_URL || 'http://localhost:3500';
+const SYSTEM_PROMPT = process.env.SYSTEM_PROMPT || `あなたはJClaw v2.5です。iHouse Japan（大阪）が開発したAIアシスタントです。日本語・英語・中文対応。回答は簡潔実用的に。今は2026年3月。`;
 const OWNER_ONLY = process.env.OWNER_ONLY === 'true';
 let OWNER_USER_ID = process.env.OWNER_USER_ID || '';
 
@@ -221,12 +253,7 @@ async function chatWithOllama(userId, userMessage) {
     }
   }
 
-    // Google Workspace auto-detect
-    if (GOOGLE_ENABLED) {
-      const gwsResult = await handleGoogleTool(userMessage);
-      if (gwsResult) {
-        systemContent += "\n\n[Google Workspace Results]\n" + gwsResult + "\nこの情報を自然に回答に含めてください。";
-      }
+    if (GWS_ENABLED) {
     }
 
   // Auto web search if keywords detected
@@ -330,7 +357,7 @@ async function handleEvent(event) {
   // /status command
   if (userText === '/status') {
     const history = getHistory(userId);
-    const statusText = '📊 JClaw v2.2 Status\n\n'
+    const statusText = '📊 JClaw v2.5 Status\n\n'
       + '🦙 Model: ' + OLLAMA_MODEL + '\n'
       + '🧠 Memory: Tier S (memclawz v9.1)\n'
       + '   Qdrant + Neo4j Knowledge Graph\n'
@@ -353,7 +380,7 @@ async function handleEvent(event) {
   if (userText === '/help' || userText === '/ヘルプ') {
     return client.replyMessage({
       replyToken: event.replyToken,
-      messages: [{ type: 'text', text: '🐾 JClaw v2.2 — AI Assistant\n'
+      messages: [{ type: 'text', text: '🐾 JClaw v2.5 — AI Assistant\n'
         + 'by iHouse Japan 🇯🇵\n\n'
         + '━━━ 🧠 Tier S 記憶 ━━━\n'
         + 'あなたの名前・好み・過去の会話を記憶。\n'
@@ -404,6 +431,9 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Rate Limit: max 30 webhook calls per minute per IP
+const webhookLimiter = rateLimit({ windowMs: 60000, max: 30 });
+app.use("/webhook", webhookLimiter);
 app.post('/webhook', middleware(config), async (req, res) => {
   try {
     const results = await Promise.allSettled(req.body.events.map(handleEvent));
@@ -427,7 +457,7 @@ app.use((req, res) => {
 
 app.listen(PORT, () => {
   console.log('='.repeat(50));
-  console.log('🐾 JClaw v2.2 is running on port ' + PORT);
+  console.log('🐾 JClaw v2.5 is running on port ' + PORT);
   console.log('🦙 Ollama: ' + OLLAMA_HOST + ' (' + OLLAMA_MODEL + ')');
   console.log('🔍 Web Search: SearXNG (self-hosted, free, unlimited)');
   console.log('🧠 Memory: memclawz v9.1 (Qdrant + Neo4j, zero API cost)');
